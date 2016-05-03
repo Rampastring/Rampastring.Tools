@@ -174,6 +174,46 @@ namespace Rampastring.Tools
             Sections[index].Keys.Clear();
         }
 
+        /// <summary>
+        /// Combines two INI sections, with the second section overriding 
+        /// in case conflicting keys are present. The combined section
+        /// then over-writes the second section.
+        /// </summary>
+        /// <param name="firstSectionName">The name of the first INI section.</param>
+        /// <param name="secondSectionName">The name of the second INI section.</param>
+        public void CombineSections(string firstSectionName, string secondSectionName)
+        {
+            int firstIndex = Sections.FindIndex(s => s.SectionName == firstSectionName);
+
+            if (firstIndex == -1)
+                return;
+
+            int secondIndex = Sections.FindIndex(s => s.SectionName == secondSectionName);
+
+            if (secondIndex == -1)
+                return;
+
+            IniSection firstSection = Sections[firstIndex];
+            IniSection secondSection = Sections[secondIndex];
+
+            IniSection newSection = new IniSection(secondSection.SectionName);
+
+            foreach (string[] keyAndValue in firstSection.Keys)
+                newSection.Keys.Add(keyAndValue);
+
+            foreach (string[] keyAndValue in secondSection.Keys)
+            {
+                int index = newSection.Keys.FindIndex(k => k[0] == keyAndValue[0]);
+
+                if (index > -1)
+                    newSection.Keys[index] = keyAndValue;
+                else
+                    newSection.Keys.Add(keyAndValue);
+            }
+
+            Sections[secondIndex] = newSection;
+        }
+
         public string GetStringValue(string section, string key, string defaultValue)
         {
             IniSection iniSection = GetSection(section);
