@@ -17,7 +17,14 @@ namespace Rampastring.Tools
     {
         #region Static methods
 
-        public static IniFile ConsolidateIniFiles(IniFile firstIni, IniFile secondIni)
+        /// <summary>
+        /// Consolidates two INI files, adding all of the second INI file's contents
+        /// to the first INI file. In case conflicting keys are found, the second
+        /// INI file takes priority.
+        /// </summary>
+        /// <param name="firstIni">The first INI file.</param>
+        /// <param name="secondIni">The second INI file.</param>
+        public static void ConsolidateIniFiles(IniFile firstIni, IniFile secondIni)
         {
             List<string> sections = secondIni.GetSections();
 
@@ -29,8 +36,6 @@ namespace Rampastring.Tools
                     firstIni.SetStringValue(section, key, secondIni.GetStringValue(section, key, String.Empty));
                 }
             }
-
-            return firstIni;
         }
 
         #endregion
@@ -50,11 +55,6 @@ namespace Rampastring.Tools
         public IniFile(Stream stream)
         {
             ParseIniFile(stream);
-        }
-
-        public void SetFilePath(string path)
-        {
-            FileName = path;
         }
 
         public string FileName { get; set; }
@@ -126,11 +126,19 @@ namespace Rampastring.Tools
             }
         }
 
+        /// <summary>
+        /// Writes the INI file to the path that was
+        /// given to the instance on creation.
+        /// </summary>
         public void WriteIniFile()
         {
             WriteIniFile(FileName);
         }
 
+        /// <summary>
+        /// Writes the INI file's contents to the specified path.
+        /// </summary>
+        /// <param name="filePath">The path of the file to write to.</param>
         public void WriteIniFile(string filePath)
         {
             if (File.Exists(filePath))
@@ -151,6 +159,10 @@ namespace Rampastring.Tools
             sw.Close();
         }
 
+        /// <summary>
+        /// Moves a section's position to the first place in the INI file's section list.
+        /// </summary>
+        /// <param name="sectionName">The name of the INI section to move.</param>
         public void MoveSectionToFirst(string sectionName)
         {
             int index = Sections.FindIndex(s => s.SectionName == sectionName);
@@ -164,6 +176,11 @@ namespace Rampastring.Tools
             Sections.Insert(0, section);
         }
 
+        /// <summary>
+        /// Erases all existing keys of a section.
+        /// Does nothing if the section does not exist.
+        /// </summary>
+        /// <param name="sectionName">The name of the section.</param>
         public void EraseSectionKeys(string sectionName)
         {
             int index = Sections.FindIndex(s => s.SectionName == sectionName);
@@ -214,6 +231,13 @@ namespace Rampastring.Tools
             Sections[secondIndex] = newSection;
         }
 
+        /// <summary>
+        /// Returns a string value from the INI file.
+        /// </summary>
+        /// <param name="section">The section of the key.</param>
+        /// <param name="key">The INI key.</param>
+        /// <param name="defaultValue">The value to return if the section or key wasn't found.</param>
+        /// <returns>The given key's value if the section and key was found. Otherwise the given defaultValue.</returns>
         public string GetStringValue(string section, string key, string defaultValue)
         {
             IniSection iniSection = GetSection(section);
@@ -251,6 +275,15 @@ namespace Rampastring.Tools
             }
         }
 
+        /// <summary>
+        /// Returns an integer value from the INI file.
+        /// </summary>
+        /// <param name="section">The section of the key.</param>
+        /// <param name="key">The INI key.</param>
+        /// <param name="defaultValue">The value to return if the section or key wasn't found,
+        /// or converting the key's value to an integer failed.</param>
+        /// <returns>The given key's value if the section and key was found and
+        /// the value is a valid integer. Otherwise the given defaultValue.</returns>
         public int GetIntValue(string section, string key, int defaultValue)
         {
             return Utilities.IntFromString(GetStringValue(section, key, String.Empty), defaultValue);
@@ -287,16 +320,43 @@ namespace Rampastring.Tools
             }
         }
 
+        /// <summary>
+        /// Returns a double-precision floating point value from the INI file.
+        /// </summary>
+        /// <param name="section">The section of the key.</param>
+        /// <param name="key">The INI key.</param>
+        /// <param name="defaultValue">The value to return if the section or key wasn't found,
+        /// or converting the key's value to a double failed.</param>
+        /// <returns>The given key's value if the section and key was found and
+        /// the value is a valid double. Otherwise the given defaultValue.</returns>
         public double GetDoubleValue(string section, string key, double defaultValue)
         {
             return Utilities.DoubleFromString(GetStringValue(section, key, String.Empty), defaultValue);
         }
 
+        /// <summary>
+        /// Returns a single-precision floating point value from the INI file.
+        /// </summary>
+        /// <param name="section">The section of the key.</param>
+        /// <param name="key">The INI key.</param>
+        /// <param name="defaultValue">The value to return if the section or key wasn't found,
+        /// or converting the key's value to a float failed.</param>
+        /// <returns>The given key's value if the section and key was found and
+        /// the value is a valid float. Otherwise the given defaultValue.</returns>
         public float GetSingleValue(string section, string key, float defaultValue)
         {
             return Utilities.FloatFromString(GetStringValue(section, key, String.Empty), defaultValue);
         }
 
+        /// <summary>
+        /// Returns a boolean value from the INI file.
+        /// </summary>
+        /// <param name="section">The section of the key.</param>
+        /// <param name="key">The INI key.</param>
+        /// <param name="defaultValue">The value to return if the section or key wasn't found,
+        /// or converting the key's value to a boolean failed.</param>
+        /// <returns>The given key's value if the section and key was found and
+        /// the value is a valid boolean. Otherwise the given defaultValue.</returns>
         public bool GetBooleanValue(string section, string key, bool defaultValue)
         {
             return Utilities.BooleanFromString(GetStringValue(section, key, String.Empty), defaultValue);
@@ -473,14 +533,15 @@ namespace Rampastring.Tools
             return sectionList;
         }
 
+        /// <summary>
+        /// Checks whether a section exists. Returns true if the section
+        /// exists, otherwise returns false.
+        /// </summary>
+        /// <param name="sectionName">The name of the INI section.</param>
+        /// <returns></returns>
         public bool SectionExists(string sectionName)
         {
-            int index = Sections.FindIndex(c => c.SectionName == sectionName);
-
-            if (index == -1)
-                return false;
-
-            return true;
+            return Sections.FindIndex(c => c.SectionName == sectionName) != -1;
         }
     }
 
