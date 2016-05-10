@@ -60,10 +60,7 @@ namespace Rampastring.Tools
                 falseString = "No";
             }
 
-            if (boolean)
-                return trueString;
-
-            return falseString;
+            return boolean ? trueString : falseString;
         }
 
         /// <summary>
