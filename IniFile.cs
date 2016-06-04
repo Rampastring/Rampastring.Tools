@@ -40,8 +40,15 @@ namespace Rampastring.Tools
 
         #endregion
 
+        /// <summary>
+        /// Creates a new INI file instance.
+        /// </summary>
         public IniFile() { }
 
+        /// <summary>
+        /// Creates a new INI file instance and parses it.
+        /// </summary>
+        /// <param name="filePath">The path of the INI file.</param>
         public IniFile(string filePath)
         {
             FileName = filePath;
@@ -52,14 +59,35 @@ namespace Rampastring.Tools
             }
         }
 
+        /// <summary>
+        /// Creates a new INI file instance and parses it.
+        /// </summary>
+        /// <param name="stream">The stream to read the INI file from.</param>
         public IniFile(Stream stream)
         {
             ParseIniFile(stream);
         }
 
         public string FileName { get; set; }
-        List<IniSection> Sections = new List<IniSection>();
-        int _lastSectionIndex = 0;
+
+        bool _allowNewSections = true;
+
+        /// <summary>
+        /// Gets or sets a value that determines whether the parser should only parse 
+        /// pre-determined (via AddSection()) sections or all sections in the INI file.
+        /// </summary>
+        public bool AllowNewSections { get { return _allowNewSections; } set { _allowNewSections = value; } }
+
+        protected List<IniSection> Sections = new List<IniSection>();
+        private int _lastSectionIndex = 0;
+
+        public void Parse()
+        {
+            if (File.Exists(FileName))
+            {
+                ParseIniFile(File.OpenRead(FileName));
+            }
+        }
 
         private void ParseIniFile(Stream stream)
         {
@@ -88,11 +116,13 @@ namespace Rampastring.Tools
                     {
                         currentSectionId = index;
                     }
-                    else
+                    else if (AllowNewSections)
                     {
                         Sections.Add(new IniSection(sectionName));
                         currentSectionId = Sections.Count - 1;
                     }
+                    else
+                        currentSectionId = -1;
 
                     continue;
                 }
@@ -115,6 +145,11 @@ namespace Rampastring.Tools
 
             reader.Close();
 
+            ApplyBaseIni();
+        }
+
+        protected virtual void ApplyBaseIni()
+        {
             string basedOn = GetStringValue("INISystem", "BasedOn", String.Empty);
             if (!String.IsNullOrEmpty(basedOn))
             {
@@ -157,6 +192,15 @@ namespace Rampastring.Tools
 
             sw.WriteLine();
             sw.Close();
+        }
+
+        /// <summary>
+        /// Adds a section into the INI file.
+        /// </summary>
+        /// <param name="sectionName">The name of the section to add.</param>
+        public void AddSection(string sectionName)
+        {
+            Sections.Add(new IniSection(sectionName));
         }
 
         /// <summary>
@@ -286,7 +330,7 @@ namespace Rampastring.Tools
         /// the value is a valid integer. Otherwise the given defaultValue.</returns>
         public int GetIntValue(string section, string key, int defaultValue)
         {
-            return Utilities.IntFromString(GetStringValue(section, key, String.Empty), defaultValue);
+            return Conversions.IntFromString(GetStringValue(section, key, String.Empty), defaultValue);
         }
 
         public int GetIntValue(string section, string key, int defaultValue, out bool success)
@@ -331,7 +375,7 @@ namespace Rampastring.Tools
         /// the value is a valid double. Otherwise the given defaultValue.</returns>
         public double GetDoubleValue(string section, string key, double defaultValue)
         {
-            return Utilities.DoubleFromString(GetStringValue(section, key, String.Empty), defaultValue);
+            return Conversions.DoubleFromString(GetStringValue(section, key, String.Empty), defaultValue);
         }
 
         /// <summary>
@@ -345,7 +389,7 @@ namespace Rampastring.Tools
         /// the value is a valid float. Otherwise the given defaultValue.</returns>
         public float GetSingleValue(string section, string key, float defaultValue)
         {
-            return Utilities.FloatFromString(GetStringValue(section, key, String.Empty), defaultValue);
+            return Conversions.FloatFromString(GetStringValue(section, key, String.Empty), defaultValue);
         }
 
         /// <summary>
@@ -359,7 +403,7 @@ namespace Rampastring.Tools
         /// the value is a valid boolean. Otherwise the given defaultValue.</returns>
         public bool GetBooleanValue(string section, string key, bool defaultValue)
         {
-            return Utilities.BooleanFromString(GetStringValue(section, key, String.Empty), defaultValue);
+            return Conversions.BooleanFromString(GetStringValue(section, key, String.Empty), defaultValue);
         }
 
         private IniSection GetSection(string name)
@@ -487,7 +531,7 @@ namespace Rampastring.Tools
 
         public void SetBooleanValue(string section, string key, bool value)
         {
-            string strValue = Utilities.BooleanToString(value, BooleanStringStyle.TRUEFALSE);
+            string strValue = Conversions.BooleanToString(value, BooleanStringStyle.TRUEFALSE);
 
             int sectionId = Sections.FindIndex(c => c.SectionName == section);
             if (sectionId == -1)
@@ -514,15 +558,12 @@ namespace Rampastring.Tools
 
             if (section == null)
                 return null;
-            else
-            {
-                List<string> returnValue = new List<string>();
 
-                foreach (string[] key in section.Keys)
-                    returnValue.Add(key[0]);
+            List<string> returnValue = new List<string>();
 
-                return returnValue;
-            }
+            section.Keys.ForEach(key => returnValue.Add(key[0]));
+
+            return returnValue;
         }
 
         /// <summary>
@@ -532,8 +573,7 @@ namespace Rampastring.Tools
         {
             List<string> sectionList = new List<string>();
 
-            foreach (IniSection section in Sections)
-                sectionList.Add(section.SectionName);
+            Sections.ForEach(section => sectionList.Add(section.SectionName));
 
             return sectionList;
         }

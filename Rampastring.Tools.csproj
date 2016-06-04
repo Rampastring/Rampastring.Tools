@@ -41,6 +41,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BooleanStringStyle.cs" />
+    <Compile Include="Conversions.cs" />
     <Compile Include="Delegates.cs" />
     <Compile Include="IniFile.cs" />
     <Compile Include="Logger.cs" />
