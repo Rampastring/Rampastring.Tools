@@ -15,5 +15,6 @@ namespace Rampastring.Tools
         public delegate void DualStringDelegate(string param1, string param2);
         public delegate void TripleStringDelegate(string param1, string param2, string param3);
         public delegate void StringArrayDelegate(string[] args);
+        public delegate void StringIntDelegate(int param1, string param2);
     }
 }

@@ -130,5 +130,83 @@ namespace Rampastring.Tools
 
             return intArray;
         }
+
+        /// <summary>
+        /// Converts an array of booleans into an array of bytes,
+        /// packing 8 boolean values into a single byte.
+        /// </summary>
+        /// <param name="boolArray">The boolean array.</param>
+        /// <returns>The generated array of bytes.</returns>
+        public static byte[] BoolArrayIntoBytes(bool[] boolArray)
+        {
+            // Slight modification of Marc Gravell's code at
+            // http://stackoverflow.com/questions/713057/convert-bool-to-byte
+
+            int byteCount = boolArray.Length / 8;
+            if ((boolArray.Length % 8) != 0)
+                byteCount++;
+
+            byte[] bytes = new byte[byteCount];
+            int optionIndex = 0;
+            int byteIndex = 0;
+
+            for (int i = 0; i < boolArray.Length; i++)
+            {
+                if (boolArray[i])
+                {
+                    bytes[byteIndex] |= (byte)(((byte)1) << optionIndex);
+                }
+                optionIndex++;
+                if (optionIndex == 8)
+                {
+                    optionIndex = 0;
+                    byteIndex++;
+                }
+            }
+
+            return bytes;
+        }
+
+        public static bool[] BytesIntoBoolArray(byte[] byteArray)
+        {
+            int booleanCount = byteArray.Length * 8;
+            bool[] boolArray = new bool[booleanCount];
+
+            // Worth reading: 
+            // http://stackoverflow.com/questions/141525/what-are-bitwise-shift-bit-shift-operators-and-how-do-they-work
+
+            for (int i = 0; i < byteArray.Length; i++)
+            {
+                byte b = byteArray[i];
+                bool[] booleans = ByteToBoolArray(b);
+
+                for (int j = 0; j < booleans.Length; j++)
+                {
+                    boolArray[i * 8 + j] = booleans[j];
+                }
+            }
+
+            return boolArray;
+        }
+
+        /// <summary>
+        /// Converts a byte to an array of 8 booleans.
+        /// </summary>
+        /// <param name="b">The byte.</param>
+        /// <returns>An array of 8 booleans.</returns>
+        public static bool[] ByteToBoolArray(byte b)
+        {
+            // prepare the return result
+            bool[] result = new bool[8];
+
+            // check each bit in the byte. if 1 set to true, if 0 set to false
+            for (int i = 0; i < 8; i++)
+                result[i] = (b & (1 << i)) == 0 ? false : true;
+
+            // reverse the array
+            // Array.Reverse(result);
+
+            return result;
+        }
     }
 }
