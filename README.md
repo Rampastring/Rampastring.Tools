@@ -1,0 +1,1 @@
+A C# library that contains generally useful tools and classes like an INI file parser, a logger class, type conversions and such.
