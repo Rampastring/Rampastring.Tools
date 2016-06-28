@@ -8,7 +8,7 @@ using System.IO;
 namespace Rampastring.Tools
 {
     /// <summary>
-    /// A self-explanatory class for logging.
+    /// A fairly self-explanatory class for logging.
     /// </summary>
     public static class Logger
     {
@@ -16,16 +16,16 @@ namespace Rampastring.Tools
 
         public static bool WriteLogFile { get; set; }
 
-        public static string LogPath;
+        private static string LogPath;
 
-        public static string LogFileName;
+        private static string LogFileName;
 
         private static readonly object locker = new object();
 
-        public static void Initialize()
+        public static void Initialize(string logFilePath, string logFileName)
         {
-            LogPath = String.Empty;
-            LogFileName = String.Empty;
+            LogPath = logFilePath;
+            LogFileName = logFileName;
         }
 
         public static void Log(string data)
