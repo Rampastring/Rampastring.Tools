@@ -328,7 +328,7 @@ namespace Rampastring.Tools
         /// the value is a valid integer. Otherwise the given defaultValue.</returns>
         public int GetIntValue(string section, string key, int defaultValue)
         {
-            return Conversions.IntFromString(GetStringValue(section, key, String.Empty), defaultValue);
+            return Conversions.IntFromString(GetStringValue(section, key, null), defaultValue);
         }
 
         public int GetIntValue(string section, string key, int defaultValue, out bool success)

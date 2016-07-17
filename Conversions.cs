@@ -102,7 +102,9 @@ namespace Rampastring.Tools
         /// <returns>An integer based on the given string.</returns>
         public static int IntFromString(string str, int defaultValue)
         {
-            if (String.IsNullOrEmpty(str))
+            // In theory the "if" here is useless, but having it here
+            // makes the code run 100+ times faster for null / empty strings.
+            if (string.IsNullOrEmpty(str))
             {
                 return defaultValue;
             }
@@ -110,7 +112,7 @@ namespace Rampastring.Tools
             {
                 try
                 {
-                    return Int32.Parse(str);
+                    return int.Parse(str);
                 }
                 catch
                 {

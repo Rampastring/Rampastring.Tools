@@ -43,6 +43,7 @@
   <ItemGroup>
     <Compile Include="BooleanStringStyle.cs" />
     <Compile Include="Conversions.cs" />
+    <Compile Include="ExtendedStringBuilder.cs" />
     <Compile Include="IniFile.cs" />
     <Compile Include="Logger.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
