@@ -45,6 +45,12 @@
     <Compile Include="Conversions.cs" />
     <Compile Include="ExtendedStringBuilder.cs" />
     <Compile Include="IniFile.cs" />
+    <Compile Include="INIProperties\BoolProperty.cs" />
+    <Compile Include="INIProperties\DoubleProperty.cs" />
+    <Compile Include="INIProperties\GenericINIProperty.cs" />
+    <Compile Include="INIProperties\IIniProperty.cs" />
+    <Compile Include="INIProperties\IntProperty.cs" />
+    <Compile Include="INIProperties\StringProperty.cs" />
     <Compile Include="Logger.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utilities.cs" />

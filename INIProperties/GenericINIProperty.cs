@@ -1,0 +1,26 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace Rampastring.Tools.INIProperties
+{
+    public abstract class GenericINIProperty<T> : IIniProperty
+    {
+        public GenericINIProperty(T defaultValue)
+        {
+            DefaultValue = DefaultValue;
+        }
+
+        protected T DefaultValue { get; private set; }
+
+        public T Value { get; protected set; }
+
+        public static implicit operator T(GenericINIProperty<T> property)
+        {
+            return property.Value;
+        }
+
+        public abstract void ParseValue(IniFile iniFile, string sectionName, string keyName);
+    }
+}
