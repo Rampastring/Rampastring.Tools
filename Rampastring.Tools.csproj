@@ -47,6 +47,7 @@
     <Compile Include="IniFile.cs" />
     <Compile Include="INIProperties\BoolProperty.cs" />
     <Compile Include="INIProperties\DoubleProperty.cs" />
+    <Compile Include="INIProperties\EnumProperty.cs" />
     <Compile Include="INIProperties\GenericINIProperty.cs" />
     <Compile Include="INIProperties\IIniProperty.cs" />
     <Compile Include="INIProperties\IntProperty.cs" />

@@ -10,6 +10,8 @@ namespace Rampastring.Tools.INIProperties
     /// </summary>
     public class StringProperty : GenericINIProperty<string>, IIniProperty
     {
+        public StringProperty() : this(string.Empty) { }
+
         public StringProperty(string defaultValue) : base(defaultValue)
         {
         }

@@ -10,6 +10,8 @@ namespace Rampastring.Tools.INIProperties
     /// </summary>
     public class BoolProperty : GenericINIProperty<bool>, IIniProperty
     {
+        public BoolProperty() : this(false) { }
+
         public BoolProperty(bool defaultValue) : base(defaultValue)
         {
         }
