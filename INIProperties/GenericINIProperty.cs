@@ -9,10 +9,10 @@ namespace Rampastring.Tools.INIProperties
     {
         public GenericINIProperty(T defaultValue)
         {
-            DefaultValue = DefaultValue;
+            DefaultValue = defaultValue;
         }
 
-        protected T DefaultValue { get; private set; }
+        public T DefaultValue { get; private set; }
 
         public T Value { get; protected set; }
 
@@ -22,5 +22,10 @@ namespace Rampastring.Tools.INIProperties
         }
 
         public abstract void ParseValue(IniFile iniFile, string sectionName, string keyName);
+
+        public override string ToString()
+        {
+            return Value.ToString();
+        }
     }
 }
