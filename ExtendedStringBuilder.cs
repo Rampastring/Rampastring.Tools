@@ -2,6 +2,10 @@
 
 namespace Rampastring.Tools
 {
+    /// <summary>
+    /// A StringBuilder that can automatically add a separator between
+    /// appended strings.
+    /// </summary>
     public class ExtendedStringBuilder
     {
         public ExtendedStringBuilder()
