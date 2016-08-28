@@ -41,17 +41,11 @@ namespace Rampastring.Tools
                         DateTime now = DateTime.Now;
 
                         StringBuilder sb = new StringBuilder();
-                        sb.Append(String.Format("{0,2:D2}", now.Hour));
-                        sb.Append(":");
-                        sb.Append(String.Format("{0,2:D2}", now.Minute));
-                        sb.Append(":");
-                        sb.Append(String.Format("{0,2:D2}", now.Second));
-                        sb.Append(".");
-                        sb.Append(String.Format("{0,3:D3}", now.Millisecond));
+                        sb.Append(now.ToString("dd.MM. HH:mm:ss.fff"));
                         sb.Append("    ");
                         sb.Append(data);
 
-                        sw.WriteLine(now.Day + ". " + now.Month + ". " + sb.ToString());
+                        sw.WriteLine(sb.ToString());
 
                         sw.Close();
                     }
@@ -78,17 +72,11 @@ namespace Rampastring.Tools
                         DateTime now = DateTime.Now;
 
                         StringBuilder sb = new StringBuilder();
-                        sb.Append(String.Format("{0,2:D2}", now.Hour));
-                        sb.Append(":");
-                        sb.Append(String.Format("{0,2:D2}", now.Minute));
-                        sb.Append(":");
-                        sb.Append(String.Format("{0,2:D2}", now.Second));
-                        sb.Append(".");
-                        sb.Append(String.Format("{0,3:D3}", now.Millisecond));
+                        sb.Append(now.ToString("dd.MM. HH:mm:ss.fff"));
                         sb.Append("    ");
                         sb.Append(data);
 
-                        sw.WriteLine(now.Day + ". " + now.Month + ". " + sb.ToString());
+                        sw.WriteLine(sb.ToString());
 
                         sw.Close();
                     }
@@ -115,17 +103,11 @@ namespace Rampastring.Tools
                         DateTime now = DateTime.Now;
 
                         StringBuilder sb = new StringBuilder();
-                        sb.Append(String.Format("{0,2:D2}", now.Hour));
-                        sb.Append(":");
-                        sb.Append(String.Format("{0,2:D2}", now.Minute));
-                        sb.Append(":");
-                        sb.Append(String.Format("{0,2:D2}", now.Second));
-                        sb.Append(".");
-                        sb.Append(String.Format("{0,3:D3}", now.Millisecond));
+                        sb.Append(now.ToString("dd.MM. HH:mm:ss.fff"));
                         sb.Append("    ");
-                        sb.Append(String.Format(data, f1));
+                        sb.Append(string.Format(data, f1));
 
-                        sw.WriteLine(now.Day + ". " + now.Month + ". " + sb.ToString());
+                        sw.WriteLine(sb.ToString());
 
                         sw.Close();
                     }
@@ -152,17 +134,11 @@ namespace Rampastring.Tools
                         DateTime now = DateTime.Now;
 
                         StringBuilder sb = new StringBuilder();
-                        sb.Append(String.Format("{0,2:D2}", now.Hour));
-                        sb.Append(":");
-                        sb.Append(String.Format("{0,2:D2}", now.Minute));
-                        sb.Append(":");
-                        sb.Append(String.Format("{0,2:D2}", now.Second));
-                        sb.Append(".");
-                        sb.Append(String.Format("{0,3:D3}", now.Millisecond));
+                        sb.Append(now.ToString("dd.MM. HH:mm:ss.fff"));
                         sb.Append("    ");
-                        sb.Append(String.Format(data, f1, f2));
+                        sb.Append(string.Format(data, f1, f2));
 
-                        sw.WriteLine(now.Day + ". " + now.Month + ". " + sb.ToString());
+                        sw.WriteLine(sb.ToString());
 
                         sw.Close();
                     }
@@ -186,17 +162,11 @@ namespace Rampastring.Tools
                     DateTime now = DateTime.Now;
 
                     StringBuilder sb = new StringBuilder();
-                    sb.Append(String.Format("{0,2:D2}", now.Hour));
-                    sb.Append(":");
-                    sb.Append(String.Format("{0,2:D2}", now.Minute));
-                    sb.Append(":");
-                    sb.Append(String.Format("{0,2:D2}", now.Second));
-                    sb.Append(".");
-                    sb.Append(String.Format("{0,3:D3}", now.Millisecond));
+                    sb.Append(now.ToString("dd.MM. HH:mm:ss.fff"));
                     sb.Append("    ");
                     sb.Append(data);
 
-                    sw.WriteLine(now.Day + ". " + now.Month + ". " + sb.ToString());
+                    sw.WriteLine(sb.ToString());
 
                     sw.Close();
                 }
@@ -219,17 +189,11 @@ namespace Rampastring.Tools
                     DateTime now = DateTime.Now;
 
                     StringBuilder sb = new StringBuilder();
-                    sb.Append(String.Format("{0,2:D2}", now.Hour));
-                    sb.Append(":");
-                    sb.Append(String.Format("{0,2:D2}", now.Minute));
-                    sb.Append(":");
-                    sb.Append(String.Format("{0,2:D2}", now.Second));
-                    sb.Append(".");
-                    sb.Append(String.Format("{0,3:D3}", now.Millisecond));
+                    sb.Append(now.ToString("dd.MM. HH:mm:ss.fff"));
                     sb.Append("    ");
                     sb.Append(data);
 
-                    sw.WriteLine(now.Day + ". " + now.Month + ". " + sb.ToString());
+                    sw.WriteLine(sb.ToString());
 
                     sw.Close();
                 }
