@@ -87,6 +87,17 @@ namespace Rampastring.Tools
             }
         }
 
+        /// <summary>
+        /// Clears all data from this IniFile instance and then re-parses the input INI file.
+        /// </summary>
+        public void Reload()
+        {
+            _lastSectionIndex = 0;
+            Sections.Clear();
+
+            ParseIniFile(File.OpenRead(FileName));
+        }
+
         private void ParseIniFile(Stream stream)
         {
             StreamReader reader = new StreamReader(stream);
