@@ -95,7 +95,10 @@ namespace Rampastring.Tools
             _lastSectionIndex = 0;
             Sections.Clear();
 
-            ParseIniFile(File.OpenRead(FileName));
+            if (File.Exists(FileName))
+            {
+                ParseIniFile(File.OpenRead(FileName));
+            }
         }
 
         private void ParseIniFile(Stream stream)
