@@ -19,10 +19,17 @@ namespace Rampastring.Tools
             UseSeparator = useSeparator;
         }
 
+        public ExtendedStringBuilder(string value, bool useSeparator, char separator)
+        {
+            stringBuilder = new StringBuilder(value);
+            UseSeparator = useSeparator;
+            Separator = separator;
+        }
+
         private StringBuilder stringBuilder;
 
         public char Separator { get; set; }
-        public bool UseSeparator { get; private set; }
+        public bool UseSeparator { get; set; }
 
         public int Length { get { return stringBuilder.Length; } }
 
