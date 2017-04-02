@@ -16,7 +16,7 @@ namespace Rampastring.Tools
         /// <returns>A boolean based on the given string.</returns>
         public static bool BooleanFromString(string str, bool defaultValue)
         {
-            if (String.IsNullOrEmpty(str))
+            if (string.IsNullOrEmpty(str))
                 return defaultValue;
 
             char firstChar = str.ToLower()[0];

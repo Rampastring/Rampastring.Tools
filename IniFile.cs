@@ -103,10 +103,10 @@ namespace Rampastring.Tools
 
         private void ParseIniFile(Stream stream)
         {
-            StreamReader reader = new StreamReader(stream);
+            var reader = new StreamReader(stream);
 
             int currentSectionId = -1;
-            string currentLine = String.Empty;
+            string currentLine = string.Empty;
 
             while (!reader.EndOfStream)
             {
@@ -116,7 +116,7 @@ namespace Rampastring.Tools
                 if (commentStartIndex > -1)
                     currentLine = currentLine.Substring(0, commentStartIndex);
 
-                if (String.IsNullOrEmpty(currentLine))
+                if (string.IsNullOrEmpty(currentLine))
                     continue;
 
                 if (currentLine[0] == '[')
@@ -146,7 +146,7 @@ namespace Rampastring.Tools
 
                 if (equalsIndex == -1)
                 {
-                    Sections[currentSectionId].AddKey(currentLine.Trim(), String.Empty);
+                    Sections[currentSectionId].AddKey(currentLine.Trim(), string.Empty);
                 }
                 else
                 {
@@ -195,9 +195,9 @@ namespace Rampastring.Tools
             foreach (IniSection section in Sections)
             {
                 sw.WriteLine("[" + section.SectionName + "]");
-                foreach (string[] key in section.Keys)
+                foreach (var kvp in section.Keys)
                 {
-                    sw.WriteLine(key[0] + "=" + key[1]);
+                    sw.WriteLine(kvp.Key + "=" + kvp.Value);
                 }
                 sw.WriteLine();
             }
@@ -269,19 +269,19 @@ namespace Rampastring.Tools
             IniSection firstSection = Sections[firstIndex];
             IniSection secondSection = Sections[secondIndex];
 
-            IniSection newSection = new IniSection(secondSection.SectionName);
+            var newSection = new IniSection(secondSection.SectionName);
 
-            foreach (string[] keyAndValue in firstSection.Keys)
-                newSection.Keys.Add(keyAndValue);
+            foreach (var kvp in firstSection.Keys)
+                newSection.Keys.Add(kvp);
 
-            foreach (string[] keyAndValue in secondSection.Keys)
+            foreach (var kvp in secondSection.Keys)
             {
-                int index = newSection.Keys.FindIndex(k => k[0] == keyAndValue[0]);
+                int index = newSection.Keys.FindIndex(k => k.Key == kvp.Key);
 
                 if (index > -1)
-                    newSection.Keys[index] = keyAndValue;
+                    newSection.Keys[index] = kvp;
                 else
-                    newSection.Keys.Add(keyAndValue);
+                    newSection.Keys.Add(kvp);
             }
 
             Sections[secondIndex] = newSection;
@@ -300,12 +300,12 @@ namespace Rampastring.Tools
             if (iniSection == null)
                 return defaultValue;
 
-            string[] keyAndValue = iniSection.Keys.Find(str => str != null && str[0] == key);
+            var kvp = iniSection.Keys.Find(k => k.Key == key);
 
-            if (keyAndValue == null)
+            if (kvp.Value == null)
                 return defaultValue;
 
-            return keyAndValue[1];
+            return kvp.Value;
         }
 
         public string GetStringValue(string section, string key, string defaultValue, out bool success)
@@ -317,9 +317,9 @@ namespace Rampastring.Tools
                 return defaultValue;
             }
 
-            string[] keyArray = Sections[sectionId].Keys.Find(c => c[0] == key);
+            var kvp = Sections[sectionId].Keys.Find(k => k.Key == key);
 
-            if (keyArray == null)
+            if (kvp.Value == null)
             {
                 success = false;
                 return defaultValue;
@@ -327,7 +327,7 @@ namespace Rampastring.Tools
             else
             {
                 success = true;
-                return keyArray[1];
+                return kvp.Value;
             }
         }
 
@@ -343,37 +343,6 @@ namespace Rampastring.Tools
         public int GetIntValue(string section, string key, int defaultValue)
         {
             return Conversions.IntFromString(GetStringValue(section, key, null), defaultValue);
-        }
-
-        public int GetIntValue(string section, string key, int defaultValue, out bool success)
-        {
-            int sectionId = Sections.FindIndex(c => c.SectionName == section);
-            if (sectionId == -1)
-            {
-                success = false;
-                return defaultValue;
-            }
-
-            string[] keyArray = Sections[sectionId].Keys.Find(c => c[0] == key);
-
-            if (keyArray == null)
-            {
-                success = false;
-                return defaultValue;
-            }
-            else
-            {
-                try
-                {
-                    success = true;
-                    return Convert.ToInt32(keyArray[1]);
-                }
-                catch
-                {
-                    success = false;
-                    return defaultValue;
-                }
-            }
         }
 
         /// <summary>
@@ -418,7 +387,12 @@ namespace Rampastring.Tools
             return Conversions.BooleanFromString(GetStringValue(section, key, String.Empty), defaultValue);
         }
 
-        private IniSection GetSection(string name)
+        /// <summary>
+        /// Returns an INI section from the file, or null if the section doesn't exist.
+        /// </summary>
+        /// <param name="name">The name of the section.</param>
+        /// <returns>The section of the file; null if the section doesn't exist.</returns>
+        public IniSection GetSection(string name)
         {
             for (int i = _lastSectionIndex; i < Sections.Count; i++)
             {
@@ -453,15 +427,11 @@ namespace Rampastring.Tools
             if (sectionId == -1)
             {
                 Sections.Add(new IniSection(section));
-                Sections[Sections.Count - 1].Keys.Add(new string[2] { key, value });
+                Sections[Sections.Count - 1].AddKey(key, value);
             }
             else
             {
-                int keyId = Sections[sectionId].Keys.FindIndex(c => c[0] == key);
-                if (keyId == -1)
-                    Sections[sectionId].Keys.Add(new string[2] { key, value });
-                else
-                    Sections[sectionId].Keys[keyId][1] = value;
+                Sections[sectionId].AddOrReplaceKey(key, value);
             }
         }
 
@@ -477,15 +447,11 @@ namespace Rampastring.Tools
             if (sectionId == -1)
             {
                 Sections.Add(new IniSection(section));
-                Sections[Sections.Count - 1].Keys.Add(new string[2] { key, Convert.ToString(value) });
+                Sections[Sections.Count - 1].AddKey(key, Convert.ToString(value));
             }
             else
             {
-                int keyId = Sections[sectionId].Keys.FindIndex(c => c[0] == key);
-                if (keyId == -1)
-                    Sections[sectionId].Keys.Add(new string[2] { key, Convert.ToString(value) });
-                else
-                    Sections[sectionId].Keys[keyId][1] = Convert.ToString(value);
+                Sections[sectionId].AddOrReplaceKey(key, Convert.ToString(value));
             }
         }
 
@@ -498,18 +464,15 @@ namespace Rampastring.Tools
         public void SetDoubleValue(string section, string key, double value)
         {
             int sectionId = Sections.FindIndex(c => c.SectionName == section);
+            string stringValue = Convert.ToString(value, CultureInfo.GetCultureInfo("en-US").NumberFormat);
             if (sectionId == -1)
             {
                 Sections.Add(new IniSection(section));
-                Sections[Sections.Count - 1].Keys.Add(new string[2] { key, Convert.ToString(value, CultureInfo.GetCultureInfo("en-US").NumberFormat) });
+                Sections[Sections.Count - 1].AddKey(key, stringValue);
             }
             else
             {
-                int keyId = Sections[sectionId].Keys.FindIndex(c => c[0] == key);
-                if (keyId == -1)
-                    Sections[sectionId].Keys.Add(new string[2] { key, Convert.ToString(value, CultureInfo.GetCultureInfo("en-US").NumberFormat) });
-                else
-                    Sections[sectionId].Keys[keyId][1] = Convert.ToString(value, CultureInfo.GetCultureInfo("en-US").NumberFormat);
+                Sections[sectionId].AddOrReplaceKey(key, stringValue);
             }
         }
 
@@ -526,18 +489,15 @@ namespace Rampastring.Tools
         public void SetSingleValue(string section, string key, float value, int decimals)
         {
             IniSection iniSection = Sections.Find(s => s.SectionName == section);
+            string stringValue = value.ToString("N" + decimals, CultureInfo.GetCultureInfo("en-US").NumberFormat);
             if (iniSection == null)
             {
                 Sections.Add(new IniSection(section));
-                Sections[Sections.Count - 1].Keys.Add(new string[2] { key, value.ToString("N" + decimals, CultureInfo.GetCultureInfo("en-US").NumberFormat) });
+                Sections[Sections.Count - 1].AddKey(key, stringValue);
             }
             else
             {
-                int keyId = iniSection.Keys.FindIndex(c => c[0] == key);
-                if (keyId == -1)
-                    iniSection.Keys.Add(new string[2] { key, value.ToString("N" + decimals, CultureInfo.GetCultureInfo("en-US").NumberFormat) });
-                else
-                    iniSection.Keys[keyId][1] = value.ToString("N" + decimals, CultureInfo.GetCultureInfo("en-US").NumberFormat);
+                iniSection.AddOrReplaceKey(key, stringValue);
             }
         }
 
@@ -549,15 +509,11 @@ namespace Rampastring.Tools
             if (sectionId == -1)
             {
                 Sections.Add(new IniSection(section));
-                Sections[Sections.Count - 1].Keys.Add(new string[2] { key, strValue });
+                Sections[Sections.Count - 1].AddKey(key, strValue);
             }
             else
             {
-                int keyId = Sections[sectionId].Keys.FindIndex(c => c[0] == key);
-                if (keyId == -1)
-                    Sections[sectionId].Keys.Add(new string[2] { key, strValue });
-                else
-                    Sections[sectionId].Keys[keyId][1] = strValue;
+                Sections[sectionId].AddOrReplaceKey(key, strValue);
             }
         }
 
@@ -573,7 +529,7 @@ namespace Rampastring.Tools
 
             List<string> returnValue = new List<string>();
 
-            section.Keys.ForEach(key => returnValue.Add(key[0]));
+            section.Keys.ForEach(kvp => returnValue.Add(kvp.Value));
 
             return returnValue;
         }
@@ -602,6 +558,9 @@ namespace Rampastring.Tools
         }
     }
 
+    /// <summary>
+    /// Represents a [section] in an INI file.
+    /// </summary>
     public class IniSection
     {
         public IniSection() { }
@@ -612,15 +571,105 @@ namespace Rampastring.Tools
         }
 
         public string SectionName { get; set; }
-        public List<string[]> Keys = new List<string[]>();
+        public List<KeyValuePair<string, string>> Keys = new List<KeyValuePair<string, string>>();
 
+        /// <summary>
+        /// Adds a key to the INI section.
+        /// </summary>
+        /// <param name="keyName">The name of the INI key.</param>
+        /// <param name="value">The value of the INI key.</param>
         public void AddKey(string keyName, string value)
         {
-            string[] key = new string[2];
-            key[0] = keyName;
-            key[1] = value;
+            if (keyName == null || value == null)
+                throw new ArgumentException("INI keys cannot have null key names or values.");
 
-            Keys.Add(key);
+            Keys.Add(new KeyValuePair<string, string>(keyName, value));
+        }
+
+        /// <summary>
+        /// Adds a key to the INI section, or replaces the key's value if the key
+        /// already exists.
+        /// </summary>
+        /// <param name="keyName">The name of the INI key.</param>
+        /// <param name="value">The value of the INI key.</param>
+        public void AddOrReplaceKey(string keyName, string value)
+        {
+            if (keyName == null || value == null)
+                throw new ArgumentException("INI keys cannot have null key names or values.");
+
+            int index = Keys.FindIndex(k => k.Key == keyName);
+            if (index > -1)
+                Keys[index] = new KeyValuePair<string, string>(keyName, value);
+            else
+                Keys.Add(new KeyValuePair<string, string>(keyName, value));
+        }
+
+        /// <summary>
+        /// Returns a string value from the INI section.
+        /// </summary>
+        /// <param name="key">The name of the INI key.</param>
+        /// <param name="defaultValue">The value to return if the section or key wasn't found.</param>
+        /// <returns>The given key's value if the section and key was found. Otherwise the given defaultValue.</returns>
+        public string GetStringValue(string key, string defaultValue)
+        {
+            var kvp = Keys.Find(k => k.Key == key);
+
+            if (kvp.Value == null)
+                return defaultValue;
+
+            return kvp.Value;
+        }
+
+        /// <summary>
+        /// Returns an integer value from the INI section.
+        /// </summary>
+        /// <param name="key">The name of the INI key.</param>
+        /// <param name="defaultValue">The value to return if the section or key wasn't found,
+        /// or converting the key's value to an integer failed.</param>
+        /// <returns>The given key's value if the section and key was found and
+        /// the value is a valid integer. Otherwise the given defaultValue.</returns>
+        public int GetIntValue(string key, int defaultValue)
+        {
+            return Conversions.IntFromString(GetStringValue(key, string.Empty), defaultValue);
+        }
+
+        /// <summary>
+        /// Returns a double-precision floating point value from the INI section.
+        /// </summary>
+        /// <param name="key">The name of the INI key.</param>
+        /// <param name="defaultValue">The value to return if the section or key wasn't found,
+        /// or converting the key's value to a double failed.</param>
+        /// <returns>The given key's value if the section and key was found and
+        /// the value is a valid double. Otherwise the given defaultValue.</returns>
+        public double GetDoubleValue(string key, double defaultValue)
+        {
+            return Conversions.DoubleFromString(GetStringValue(key, string.Empty), defaultValue);
+        }
+
+        /// <summary>
+        /// Returns a single-precision floating point value from the INI section.
+        /// </summary>
+        /// <param name="key">The name of the INI key.</param>
+        /// <param name="defaultValue">The value to return if the section or key wasn't found,
+        /// or converting the key's value to a float failed.</param>
+        /// <returns>The given key's value if the section and key was found and
+        /// the value is a valid float. Otherwise the given defaultValue.</returns>
+        public float GetSingleValue(string key, float defaultValue)
+        {
+            return Conversions.FloatFromString(GetStringValue(key, String.Empty), defaultValue);
+        }
+
+        /// <summary>
+        /// Returns a boolean value from the INI section.
+        /// </summary>
+        /// <param name="key">The name of the INI key.</param>
+        /// <param name="defaultValue">The value to return if the section or key wasn't found,
+        /// or converting the key's value to a boolean failed.</param>
+        /// <returns>The given key's value if the section and key was found and
+        /// the value is a valid boolean. Otherwise the given defaultValue.</returns>
+        public bool GetBooleanValue(string key, bool defaultValue)
+        {
+            return Conversions.BooleanFromString(GetStringValue(key, String.Empty), defaultValue);
         }
     }
 }
