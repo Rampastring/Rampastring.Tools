@@ -529,7 +529,7 @@ namespace Rampastring.Tools
 
             List<string> returnValue = new List<string>();
 
-            section.Keys.ForEach(kvp => returnValue.Add(kvp.Value));
+            section.Keys.ForEach(kvp => returnValue.Add(kvp.Key));
 
             return returnValue;
         }
