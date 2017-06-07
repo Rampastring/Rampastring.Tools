@@ -26,6 +26,13 @@ namespace Rampastring.Tools
             Separator = separator;
         }
 
+        public ExtendedStringBuilder(bool useSeparator, char separator)
+        {
+            stringBuilder = new StringBuilder();
+            UseSeparator = useSeparator;
+            Separator = separator;
+        }
+
         private StringBuilder stringBuilder;
 
         public char Separator { get; set; }

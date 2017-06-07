@@ -423,16 +423,14 @@ namespace Rampastring.Tools
         /// <param name="value">The value to set to the key.</param>
         public void SetStringValue(string section, string key, string value)
         {
-            int sectionId = Sections.FindIndex(c => c.SectionName == section);
-            if (sectionId == -1)
+            var iniSection = Sections.Find(s => s.SectionName == section);
+            if (iniSection == null)
             {
-                Sections.Add(new IniSection(section));
-                Sections[Sections.Count - 1].AddKey(key, value);
+                iniSection = new IniSection(section);
+                Sections.Add(iniSection);
             }
-            else
-            {
-                Sections[sectionId].AddOrReplaceKey(key, value);
-            }
+
+            iniSection.SetStringValue(key, value);
         }
 
         /// <summary>
@@ -443,16 +441,14 @@ namespace Rampastring.Tools
         /// <param name="value">The value to set to the key.</param>
         public void SetIntValue(string section, string key, int value)
         {
-            int sectionId = Sections.FindIndex(c => c.SectionName == section);
-            if (sectionId == -1)
+            var iniSection = Sections.Find(s => s.SectionName == section);
+            if (iniSection == null)
             {
-                Sections.Add(new IniSection(section));
-                Sections[Sections.Count - 1].AddKey(key, Convert.ToString(value));
+                iniSection = new IniSection(section);
+                Sections.Add(iniSection);
             }
-            else
-            {
-                Sections[sectionId].AddOrReplaceKey(key, Convert.ToString(value));
-            }
+
+            iniSection.SetIntValue(key, value);
         }
 
         /// <summary>
@@ -463,17 +459,14 @@ namespace Rampastring.Tools
         /// <param name="value">The value to set to the key.</param>
         public void SetDoubleValue(string section, string key, double value)
         {
-            int sectionId = Sections.FindIndex(c => c.SectionName == section);
-            string stringValue = Convert.ToString(value, CultureInfo.GetCultureInfo("en-US").NumberFormat);
-            if (sectionId == -1)
+            var iniSection = Sections.Find(s => s.SectionName == section);
+            if (iniSection == null)
             {
-                Sections.Add(new IniSection(section));
-                Sections[Sections.Count - 1].AddKey(key, stringValue);
+                iniSection = new IniSection(section);
+                Sections.Add(iniSection);
             }
-            else
-            {
-                Sections[sectionId].AddOrReplaceKey(key, stringValue);
-            }
+
+            iniSection.SetDoubleValue(key, value);
         }
 
         public void SetSingleValue(string section, string key, float value)
@@ -486,35 +479,41 @@ namespace Rampastring.Tools
             SetSingleValue(section, key, Convert.ToSingle(value), decimals);
         }
 
+        /// <summary>
+        /// Sets the float value of a key in the INI file.
+        /// </summary>
+        /// <param name="section">The name of the key's section.</param>
+        /// <param name="key">The name of the INI key.</param>
+        /// <param name="value">The value to set to the key.</param>
         public void SetSingleValue(string section, string key, float value, int decimals)
         {
-            IniSection iniSection = Sections.Find(s => s.SectionName == section);
             string stringValue = value.ToString("N" + decimals, CultureInfo.GetCultureInfo("en-US").NumberFormat);
+            var iniSection = Sections.Find(s => s.SectionName == section);
             if (iniSection == null)
             {
-                Sections.Add(new IniSection(section));
-                Sections[Sections.Count - 1].AddKey(key, stringValue);
+                iniSection = new IniSection(section);
+                Sections.Add(iniSection);
             }
-            else
-            {
-                iniSection.AddOrReplaceKey(key, stringValue);
-            }
+
+            iniSection.SetStringValue(key, stringValue);
         }
 
+        /// <summary>
+        /// Sets the boolean value of a key in the INI file.
+        /// </summary>
+        /// <param name="section">The name of the key's section.</param>
+        /// <param name="key">The name of the INI key.</param>
+        /// <param name="value">The value to set to the key.</param>
         public void SetBooleanValue(string section, string key, bool value)
         {
-            string strValue = Conversions.BooleanToString(value, BooleanStringStyle.TRUEFALSE);
+            var iniSection = Sections.Find(s => s.SectionName == section);
+            if (iniSection == null)
+            {
+                iniSection = new IniSection(section);
+                Sections.Add(iniSection);
+            }
 
-            int sectionId = Sections.FindIndex(c => c.SectionName == section);
-            if (sectionId == -1)
-            {
-                Sections.Add(new IniSection(section));
-                Sections[Sections.Count - 1].AddKey(key, strValue);
-            }
-            else
-            {
-                Sections[sectionId].AddOrReplaceKey(key, strValue);
-            }
+            iniSection.SetBooleanValue(key, value);
         }
 
         /// <summary>
@@ -563,6 +562,8 @@ namespace Rampastring.Tools
     /// </summary>
     public class IniSection
     {
+        private const string NUMBER_FORMAT_CULTURE = "en-US";
+
         public IniSection() { }
 
         public IniSection(string sectionName)
@@ -657,6 +658,62 @@ namespace Rampastring.Tools
         public float GetSingleValue(string key, float defaultValue)
         {
             return Conversions.FloatFromString(GetStringValue(key, String.Empty), defaultValue);
+        }
+
+        /// <summary>
+        /// Sets the string value of a key in the INI section.
+        /// If the key doesn't exist, it is created.
+        /// </summary>
+        /// <param name="key">The name of the INI key.</param>
+        /// <param name="value">The value of the INI key.</param>
+        public void SetStringValue(string key, string value)
+        {
+            AddOrReplaceKey(key, value);
+        }
+
+        /// <summary>
+        /// Sets the integer value of a key in the INI section.
+        /// If the key doesn't exist, it is created.
+        /// </summary>
+        /// <param name="key">The name of the INI key.</param>
+        /// <param name="value">The value of the INI key.</param>
+        public void SetIntValue(string key, int value)
+        {
+            AddOrReplaceKey(key, value.ToString());
+        }
+
+        /// <summary>
+        /// Sets the double-precision floating point value of a key in the INI section.
+        /// If the key doesn't exist, it is created.
+        /// </summary>
+        /// <param name="key">The name of the INI key.</param>
+        /// <param name="value">The value of the INI key.</param>
+        public void SetDoubleValue(string key, double value)
+        {
+            AddOrReplaceKey(key, value.ToString(CultureInfo.GetCultureInfo(NUMBER_FORMAT_CULTURE).NumberFormat));
+        }
+
+        /// <summary>
+        /// Sets the single-precision floating point value of a key in the INI section.
+        /// If the key doesn't exist, it is created.
+        /// </summary>
+        /// <param name="key">The name of the INI key.</param>
+        /// <param name="value">The value of the INI key.</param>
+        public void SetFloatValue(string key, float value)
+        {
+            AddOrReplaceKey(key, value.ToString(CultureInfo.GetCultureInfo(NUMBER_FORMAT_CULTURE).NumberFormat));
+        }
+
+        /// <summary>
+        /// Sets the boolean value of a key in the INI section.
+        /// If the key doesn't exist, it is created.
+        /// </summary>
+        /// <param name="key">The name of the INI key.</param>
+        /// <param name="value">The value of the INI key.</param>
+        public void SetBooleanValue(string key, bool value)
+        {
+            string strValue = Conversions.BooleanToString(value, BooleanStringStyle.TRUEFALSE);
+            AddOrReplaceKey(key, strValue);
         }
 
         /// <summary>
