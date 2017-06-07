@@ -207,12 +207,21 @@ namespace Rampastring.Tools
         }
 
         /// <summary>
-        /// Adds a section into the INI file.
+        /// Creates and adds a section into the INI file.
         /// </summary>
         /// <param name="sectionName">The name of the section to add.</param>
         public void AddSection(string sectionName)
         {
             Sections.Add(new IniSection(sectionName));
+        }
+
+        /// <summary>
+        /// Adds a section into the INI file.
+        /// </summary>
+        /// <param name="section">The section to add.</param>
+        public void AddSection(IniSection section)
+        {
+            Sections.Add(section);
         }
 
         /// <summary>
