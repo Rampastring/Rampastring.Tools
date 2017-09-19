@@ -194,15 +194,15 @@ namespace Rampastring.Tools
             StreamWriter sw = new StreamWriter(File.OpenWrite(filePath));
             foreach (IniSection section in Sections)
             {
-                sw.WriteLine("[" + section.SectionName + "]");
+                sw.Write("[" + section.SectionName + "]\r\n");
                 foreach (var kvp in section.Keys)
                 {
-                    sw.WriteLine(kvp.Key + "=" + kvp.Value);
+                    sw.Write(kvp.Key + "=" + kvp.Value + "\r\n");
                 }
-                sw.WriteLine();
+                sw.Write("\r\n");
             }
 
-            sw.WriteLine();
+            sw.Write("\r\n");
             sw.Close();
         }
 
