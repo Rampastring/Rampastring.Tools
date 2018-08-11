@@ -66,6 +66,9 @@ namespace Rampastring.Tools
         /// <returns>A float based on the given string.</returns>
         public static float FloatFromString(string str, float defaultValue)
         {
+            if (string.IsNullOrEmpty(str))
+                return defaultValue;
+
             try
             {
                 return Convert.ToSingle(str, CultureInfo.GetCultureInfo("en-US").NumberFormat);
@@ -84,6 +87,9 @@ namespace Rampastring.Tools
         /// <returns>A double based on the given string.</returns>
         public static double DoubleFromString(string str, double defaultValue)
         {
+            if (string.IsNullOrEmpty(str))
+                return defaultValue;
+
             try
             {
                 return Convert.ToDouble(str, CultureInfo.GetCultureInfo("en-US").NumberFormat);
@@ -105,19 +111,15 @@ namespace Rampastring.Tools
             // In theory the "if" here is useless, but having it here
             // makes the code run 100+ times faster for null / empty strings.
             if (string.IsNullOrEmpty(str))
+                return defaultValue;
+
+            try
+            {
+                return int.Parse(str);
+            }
+            catch
             {
                 return defaultValue;
-            }
-            else
-            {
-                try
-                {
-                    return int.Parse(str);
-                }
-                catch
-                {
-                    return defaultValue;
-                }
             }
         }
 
