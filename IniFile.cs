@@ -564,6 +564,21 @@ namespace Rampastring.Tools
         {
             return Sections.FindIndex(c => c.SectionName == sectionName) != -1;
         }
+
+        /// <summary>
+        /// Checks whether a specific INI key exists in a specific INI section.
+        /// </summary>
+        /// <param name="sectionName">The name of the INI section.</param>
+        /// <param name="keyName">The name of the INI key.</param>
+        /// <returns>True if the key exists, otherwise false.</returns>
+        public bool KeyExists(string sectionName, string keyName)
+        {
+            IniSection section = GetSection(sectionName);
+            if (section == null)
+                return false;
+
+            return section.KeyExists(keyName);
+        }
     }
 
     /// <summary>
@@ -736,6 +751,16 @@ namespace Rampastring.Tools
         public bool GetBooleanValue(string key, bool defaultValue)
         {
             return Conversions.BooleanFromString(GetStringValue(key, String.Empty), defaultValue);
+        }
+
+        /// <summary>
+        /// Checks if the specified INI key exists in this section.
+        /// </summary>
+        /// <param name="key">The INI key.</param>
+        /// <returns>True if the key exists in this section, otherwise false.</returns>
+        public bool KeyExists(string key)
+        {
+            return Keys.FindIndex(k => k.Key == key) > -1;
         }
     }
 }
