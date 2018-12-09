@@ -600,6 +600,9 @@ namespace Rampastring.Tools
 
         /// <summary>
         /// Adds a key to the INI section.
+        /// Throws a <see cref="InvalidOperationException"/> if the key already exists.
+        /// Use <see cref="AddOrReplaceKey(string, string)"/> if you want to replace
+        /// an existing key instead.
         /// </summary>
         /// <param name="keyName">The name of the INI key.</param>
         /// <param name="value">The value of the INI key.</param>
@@ -607,6 +610,9 @@ namespace Rampastring.Tools
         {
             if (keyName == null || value == null)
                 throw new ArgumentException("INI keys cannot have null key names or values.");
+
+            if (Keys.FindIndex(kvp => kvp.Key == keyName) > -1)
+                throw new InvalidOperationException("The given key already exists in the section!");
 
             Keys.Add(new KeyValuePair<string, string>(keyName, value));
         }
