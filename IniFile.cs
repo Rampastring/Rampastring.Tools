@@ -146,11 +146,11 @@ namespace Rampastring.Tools
 
                 if (equalsIndex == -1)
                 {
-                    Sections[currentSectionId].AddKey(currentLine.Trim(), string.Empty);
+                    Sections[currentSectionId].AddOrReplaceKey(currentLine.Trim(), string.Empty);
                 }
                 else
                 {
-                    Sections[currentSectionId].AddKey(currentLine.Substring(0, equalsIndex).Trim(),
+                    Sections[currentSectionId].AddOrReplaceKey(currentLine.Substring(0, equalsIndex).Trim(),
                         currentLine.Substring(equalsIndex + 1).Trim());
                 }
             }
