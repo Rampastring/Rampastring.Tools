@@ -754,6 +754,40 @@ namespace Rampastring.Tools
         }
 
         /// <summary>
+        /// Sets the list value of a key in the INI section.
+        /// The list elements are converted to strings using the list element's
+        /// ToString method and the given separator is applied between the elements.
+        /// </summary>
+        /// <typeparam name="T">The type of the list elements.</typeparam>
+        /// <param name="key">The INI key.</param>
+        /// <param name="list">The list.</param>
+        /// <param name="separator">The separator between list elements.</param>
+        public void SetListValue<T>(string key, List<T> list, char separator)
+        {
+            AddOrReplaceKey(key, string.Join(separator.ToString(), list));
+        }
+
+        /// <summary>
+        /// Parses and returns a list value of a key in the INI section.
+        /// </summary>
+        /// <typeparam name="T">The type of the list elements.</typeparam>
+        /// <param name="key">The INI key.</param>
+        /// <param name="separator">The separator between the list elements.</param>
+        /// <param name="converter">The function that converts the list elements from strings to the given type.</param>
+        /// <returns>A list that contains the parsed elements.</returns>
+        public List<T> GetListValue<T>(string key, char separator, Func<string, T> converter)
+        {
+            List<T> list = new List<T>();
+            string value = GetStringValue(key, string.Empty);
+            string[] parts = value.Split(new char[] { separator }, StringSplitOptions.RemoveEmptyEntries);
+            foreach (string part in parts)
+            {
+                list.Add(converter(part));
+            }
+            return list;
+        }
+
+        /// <summary>
         /// Checks if the specified INI key exists in this section.
         /// </summary>
         /// <param name="key">The INI key.</param>
