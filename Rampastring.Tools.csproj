@@ -44,6 +44,8 @@
     <Compile Include="BooleanStringStyle.cs" />
     <Compile Include="Conversions.cs" />
     <Compile Include="ExtendedStringBuilder.cs" />
+    <Compile Include="IIniFile.cs" />
+    <Compile Include="IIniSection.cs" />
     <Compile Include="IniFile.cs" />
     <Compile Include="INIProperties\BoolProperty.cs" />
     <Compile Include="INIProperties\DoubleProperty.cs" />
@@ -52,11 +54,13 @@
     <Compile Include="INIProperties\IIniProperty.cs" />
     <Compile Include="INIProperties\IntProperty.cs" />
     <Compile Include="INIProperties\StringProperty.cs" />
+    <Compile Include="IniSection.cs" />
     <Compile Include="Logger.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utilities.cs" />
     <Compile Include="WindowFlasher.cs" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
