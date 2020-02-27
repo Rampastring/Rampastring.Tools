@@ -105,7 +105,6 @@ namespace Rampastring.Tools
         {
             if (File.Exists(FileName))
             {
-                // a `using` is needed to close the file immediately after reading
                 using (var stream = File.OpenRead(FileName))
                 {
                     ParseIniFile(stream);
