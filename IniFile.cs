@@ -124,7 +124,7 @@ namespace Rampastring.Tools
             Parse();
         }
 
-        private void ParseIniFile(Stream stream, System.Text.Encoding encoding = null)
+        private void ParseIniFile(Stream stream, Encoding encoding = null)
         {
             if (encoding == null)
                 encoding = this.Encoding;
@@ -222,7 +222,7 @@ namespace Rampastring.Tools
         /// </summary>
         /// <param name="stream">The stream to read the INI file from.</param>
         /// <param name="encoding">The encoding of the INI file. Default for UTF-8.</param>
-        public void WriteIniStream(Stream stream, System.Text.Encoding encoding)
+        public void WriteIniStream(Stream stream, Encoding encoding)
         {
             StreamWriter sw = new StreamWriter(stream, encoding);
             foreach (IniSection section in Sections)
