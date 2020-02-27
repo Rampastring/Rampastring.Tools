@@ -115,7 +115,7 @@ namespace Rampastring.Tools
 
             try
             {
-                return int.Parse(str);
+                return int.Parse(str,CultureInfo.InvariantCulture);
             }
             catch
             {
@@ -127,7 +127,7 @@ namespace Rampastring.Tools
         {
             int[] intArray = new int[array.Length];
             for (int i = 0; i < array.Length; i++)
-                intArray[i] = Int32.Parse(array[i]);
+                intArray[i] = int.Parse(array[i], CultureInfo.InvariantCulture);
 
             return intArray;
         }

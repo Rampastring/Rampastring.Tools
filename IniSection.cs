@@ -12,7 +12,6 @@ namespace Rampastring.Tools
     /// </summary>
     public class IniSection : IIniSection
     {
-        private const string NUMBER_FORMAT_CULTURE = "en-US";
 
         public IniSection() { }
 
@@ -146,7 +145,7 @@ namespace Rampastring.Tools
         /// <param name="value">The value of the INI key.</param>
         public void SetDoubleValue(string key, double value)
         {
-            AddOrReplaceKey(key, value.ToString(CultureInfo.GetCultureInfo(NUMBER_FORMAT_CULTURE).NumberFormat));
+            AddOrReplaceKey(key, value.ToString(CultureInfo.InvariantCulture));
         }
 
         /// <summary>
@@ -157,7 +156,7 @@ namespace Rampastring.Tools
         /// <param name="value">The value of the INI key.</param>
         public void SetFloatValue(string key, float value)
         {
-            AddOrReplaceKey(key, value.ToString(CultureInfo.GetCultureInfo(NUMBER_FORMAT_CULTURE).NumberFormat));
+            AddOrReplaceKey(key, value.ToString(CultureInfo.InvariantCulture));
         }
 
         /// <summary>
