@@ -115,7 +115,7 @@ namespace Rampastring.Tools
 
             try
             {
-                return int.Parse(str,CultureInfo.InvariantCulture);
+                return int.Parse(str, CultureInfo.InvariantCulture);
             }
             catch
             {

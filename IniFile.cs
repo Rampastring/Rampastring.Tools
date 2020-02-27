@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Globalization;
+using System.Text;
 
 namespace Rampastring.Tools
 {
@@ -49,7 +50,7 @@ namespace Rampastring.Tools
         /// <param name="filePath">The path of the INI file.</param>
         public IniFile(string filePath)
         {
-            this.FileName = filePath;
+            FileName = filePath;
 
             Parse();
         }
@@ -59,11 +60,10 @@ namespace Rampastring.Tools
         /// </summary>
         /// <param name="filePath">The path of the INI file.</param>
         /// <param name="encoding">The encoding of the INI file. Default for UTF-8.</param>
-        public IniFile(string filePath, System.Text.Encoding encoding)
+        public IniFile(string filePath, Encoding encoding)
         {
-            this.FileName = filePath;
-
-            this.Encoding = encoding;
+            FileName = filePath;
+            Encoding = encoding;
 
             Parse();
         }
@@ -82,7 +82,7 @@ namespace Rampastring.Tools
         /// </summary>
         /// <param name="stream">The stream to read the INI file from.</param>
         /// <param name="encoding">The encoding of the INI file. Default for UTF-8.</param>
-        public IniFile(Stream stream, System.Text.Encoding encoding)
+        public IniFile(Stream stream, Encoding encoding)
         {
             this.Encoding = encoding;
 
@@ -90,7 +90,7 @@ namespace Rampastring.Tools
         }
 
         public string FileName { get; set; }
-        public System.Text.Encoding Encoding { get; set; } = System.Text.Encoding.UTF8;
+        public Encoding Encoding { get; set; } = Encoding.UTF8;
 
         /// <summary>
         /// Gets or sets a value that determines whether the parser should only parse 
@@ -212,12 +212,18 @@ namespace Rampastring.Tools
         /// Writes the INI file to a specified stream.
         /// </summary>
         /// <param name="stream">The stream to read the INI file from.</param>
-        /// <param name="encoding">The encoding of the INI file. Default for UTF-8.</param>
-        public void WriteIniStream(Stream stream, System.Text.Encoding encoding = null)
+        public void WriteIniStream(Stream stream)
         {
-            if (encoding == null)
-                encoding = this.Encoding;
+            WriteIniStream(stream, this.Encoding);
+        }
 
+        /// <summary>
+        /// Writes the INI file to a specified stream.
+        /// </summary>
+        /// <param name="stream">The stream to read the INI file from.</param>
+        /// <param name="encoding">The encoding of the INI file. Default for UTF-8.</param>
+        public void WriteIniStream(Stream stream, System.Text.Encoding encoding)
+        {
             StreamWriter sw = new StreamWriter(stream, encoding);
             foreach (IniSection section in Sections)
             {
@@ -242,7 +248,6 @@ namespace Rampastring.Tools
             if (File.Exists(filePath))
                 File.Delete(filePath);
 
-            // a `using` is needed to close the file immediately after writing
             using (var stream = File.OpenWrite(filePath))
             {
                 WriteIniStream(stream);
