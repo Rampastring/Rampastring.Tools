@@ -73,7 +73,7 @@ namespace Rampastring.Tools
 
         public void GetObjectData(SerializationInfo info, StreamingContext context)
         {
-            ((ISerializable)this.stringBuilder).GetObjectData(info, context);
+            ((ISerializable)stringBuilder).GetObjectData(info, context);
         }
     }
 }

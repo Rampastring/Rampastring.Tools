@@ -84,7 +84,7 @@ namespace Rampastring.Tools
         /// <param name="encoding">The encoding of the INI file. Default for UTF-8.</param>
         public IniFile(Stream stream, Encoding encoding)
         {
-            this.Encoding = encoding;
+            Encoding = encoding;
 
             ParseIniFile(stream, encoding);
         }
@@ -126,7 +126,7 @@ namespace Rampastring.Tools
         private void ParseIniFile(Stream stream, Encoding encoding = null)
         {
             if (encoding == null)
-                encoding = this.Encoding;
+                encoding = Encoding;
 
             var reader = new StreamReader(stream, encoding);
 
@@ -194,7 +194,7 @@ namespace Rampastring.Tools
                 string path = Path.GetDirectoryName(FileName) + "\\" + basedOn;
                 IniFile baseIni = new IniFile(path);
                 ConsolidateIniFiles(baseIni, this);
-                this.Sections = baseIni.Sections;
+                Sections = baseIni.Sections;
             }
         }
 
@@ -204,7 +204,7 @@ namespace Rampastring.Tools
         /// </summary>
         public void WriteIniFile()
         {
-            WriteIniFile(this.FileName);
+            WriteIniFile(FileName);
         }
 
         /// <summary>
@@ -213,7 +213,7 @@ namespace Rampastring.Tools
         /// <param name="stream">The stream to read the INI file from.</param>
         public void WriteIniStream(Stream stream)
         {
-            WriteIniStream(stream, this.Encoding);
+            WriteIniStream(stream, Encoding);
         }
 
         /// <summary>
