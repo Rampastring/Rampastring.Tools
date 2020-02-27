@@ -47,15 +47,23 @@ namespace Rampastring.Tools
         /// Creates a new INI file instance and parses it.
         /// </summary>
         /// <param name="filePath">The path of the INI file.</param>
-        /// <param name="encoding">The encoding of the INI file. Default for UTF-8.</param>
-        public IniFile(string filePath, System.Text.Encoding encoding = null)
+        public IniFile(string filePath)
         {
             this.FileName = filePath;
 
-            if (encoding != null)
-            {
-                this.Encoding = encoding;
-            }
+            Parse();
+        }
+
+        /// <summary>
+        /// Creates a new INI file instance and parses it.
+        /// </summary>
+        /// <param name="filePath">The path of the INI file.</param>
+        /// <param name="encoding">The encoding of the INI file. Default for UTF-8.</param>
+        public IniFile(string filePath, System.Text.Encoding encoding)
+        {
+            this.FileName = filePath;
+
+            this.Encoding = encoding;
 
             Parse();
         }
@@ -64,10 +72,21 @@ namespace Rampastring.Tools
         /// Creates a new INI file instance and parses it.
         /// </summary>
         /// <param name="stream">The stream to read the INI file from.</param>
-        /// <param name="encoding">The encoding of the INI file. Default for UTF-8.</param>
-        public IniFile(Stream stream, System.Text.Encoding encoding = null)
+        public IniFile(Stream stream)
         {
             ParseIniFile(stream);
+        }
+
+        /// <summary>
+        /// Creates a new INI file instance and parses it.
+        /// </summary>
+        /// <param name="stream">The stream to read the INI file from.</param>
+        /// <param name="encoding">The encoding of the INI file. Default for UTF-8.</param>
+        public IniFile(Stream stream, System.Text.Encoding encoding)
+        {
+            this.Encoding = encoding;
+
+            ParseIniFile(stream, encoding);
         }
 
         public string FileName { get; set; }
