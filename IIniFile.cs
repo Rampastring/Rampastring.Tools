@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.IO;
 
 namespace Rampastring.Tools
 {
@@ -35,5 +36,7 @@ namespace Rampastring.Tools
         void SetStringValue(string section, string key, string value);
         void WriteIniFile();
         void WriteIniFile(string filePath);
+        void WriteIniStream(Stream stream);
+
     }
 }
