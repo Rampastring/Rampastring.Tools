@@ -90,7 +90,7 @@ namespace Rampastring.Tools
         }
 
         public string FileName { get; set; }
-        public Encoding Encoding { get; set; } = Encoding.UTF8;
+        public Encoding Encoding { get; set; } = new UTF8Encoding(false);
 
         /// <summary>
         /// Gets or sets a value that determines whether the parser should only parse 
