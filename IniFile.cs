@@ -55,10 +55,20 @@ namespace Rampastring.Tools
         {
             FileName = filePath;
 
-            if (File.Exists(filePath))
-            {
-                ParseIniFile(File.OpenRead(filePath));
-            }
+            Parse();
+        }
+
+        /// <summary>
+        /// Creates a new INI file instance and parses it.
+        /// </summary>
+        /// <param name="filePath">The path of the INI file.</param>
+        /// <param name="encoding">The encoding of the INI file. Default for UTF-8.</param>
+        public IniFile(string filePath, Encoding encoding)
+        {
+            FileName = filePath;
+            Encoding = encoding;
+
+            Parse();
         }
 
         /// <summary>
@@ -70,15 +80,26 @@ namespace Rampastring.Tools
             ParseIniFile(stream);
         }
 
-        public string FileName { get; set; }
+        /// <summary>
+        /// Creates a new INI file instance and parses it.
+        /// </summary>
+        /// <param name="stream">The stream to read the INI file from.</param>
+        /// <param name="encoding">The encoding of the INI file. Default for UTF-8.</param>
+        public IniFile(Stream stream, Encoding encoding)
+        {
+            Encoding = encoding;
 
-        bool _allowNewSections = true;
+            ParseIniFile(stream, encoding);
+        }
+
+        public string FileName { get; set; }
+        public Encoding Encoding { get; set; } = new UTF8Encoding(false);
 
         /// <summary>
         /// Gets or sets a value that determines whether the parser should only parse 
         /// pre-determined (via AddSection()) sections or all sections in the INI file.
         /// </summary>
-        public bool AllowNewSections { get { return _allowNewSections; } set { _allowNewSections = value; } }
+        public bool AllowNewSections { get; set; } = true;
 
         protected List<IniSection> Sections = new List<IniSection>();
         private int _lastSectionIndex = 0;
@@ -87,7 +108,10 @@ namespace Rampastring.Tools
         {
             if (File.Exists(FileName))
             {
-                ParseIniFile(File.OpenRead(FileName));
+                using (var stream = File.OpenRead(FileName))
+                {
+                    ParseIniFile(stream);
+                }
             }
         }
 
@@ -99,15 +123,15 @@ namespace Rampastring.Tools
             _lastSectionIndex = 0;
             Sections.Clear();
 
-            if (File.Exists(FileName))
-            {
-                ParseIniFile(File.OpenRead(FileName));
-            }
+            Parse();
         }
 
-        private void ParseIniFile(Stream stream)
+        private void ParseIniFile(Stream stream, Encoding encoding = null)
         {
-            var reader = new StreamReader(stream);
+            if (encoding == null)
+                encoding = Encoding;
+
+            var reader = new StreamReader(stream, encoding);
 
             int currentSectionId = -1;
             string currentLine = string.Empty;
@@ -213,7 +237,7 @@ namespace Rampastring.Tools
                 string path = Path.GetDirectoryName(FileName) + "\\" + basedOn;
                 IniFile baseIni = new IniFile(path);
                 ConsolidateIniFiles(baseIni, this);
-                this.Sections = baseIni.Sections;
+                Sections = baseIni.Sections;
             }
         }
 
@@ -227,15 +251,22 @@ namespace Rampastring.Tools
         }
 
         /// <summary>
-        /// Writes the INI file's contents to the specified path.
+        /// Writes the INI file to a specified stream.
         /// </summary>
-        /// <param name="filePath">The path of the file to write to.</param>
-        public void WriteIniFile(string filePath)
+        /// <param name="stream">The stream to read the INI file from.</param>
+        public void WriteIniStream(Stream stream)
         {
-            if (File.Exists(filePath))
-                File.Delete(filePath);
+            WriteIniStream(stream, Encoding);
+        }
 
-            StreamWriter sw = new StreamWriter(File.OpenWrite(filePath));
+        /// <summary>
+        /// Writes the INI file to a specified stream.
+        /// </summary>
+        /// <param name="stream">The stream to read the INI file from.</param>
+        /// <param name="encoding">The encoding of the INI file. Default for UTF-8.</param>
+        public void WriteIniStream(Stream stream, Encoding encoding)
+        {
+            StreamWriter sw = new StreamWriter(stream, encoding);
             foreach (IniSection section in Sections)
             {
                 sw.Write("[" + section.SectionName + "]\r\n");
@@ -248,6 +279,21 @@ namespace Rampastring.Tools
 
             sw.Write("\r\n");
             sw.Close();
+        }
+
+        /// <summary>
+        /// Writes the INI file's contents to the specified path.
+        /// </summary>
+        /// <param name="filePath">The path of the file to write to.</param>
+        public void WriteIniFile(string filePath)
+        {
+            if (File.Exists(filePath))
+                File.Delete(filePath);
+
+            using (var stream = File.OpenWrite(filePath))
+            {
+                WriteIniStream(stream);
+            }
         }
 
         /// <summary>

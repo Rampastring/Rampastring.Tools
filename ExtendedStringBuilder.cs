@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.Runtime.Serialization;
+using System.Text;
 
 namespace Rampastring.Tools
 {
@@ -6,7 +7,7 @@ namespace Rampastring.Tools
     /// A StringBuilder that can automatically add a separator between
     /// appended strings.
     /// </summary>
-    public class ExtendedStringBuilder
+    public class ExtendedStringBuilder : ISerializable
     {
         public ExtendedStringBuilder()
         {
@@ -33,7 +34,7 @@ namespace Rampastring.Tools
             Separator = separator;
         }
 
-        private StringBuilder stringBuilder;
+        private readonly StringBuilder stringBuilder;
 
         public char Separator { get; set; }
         public bool UseSeparator { get; set; }
@@ -68,6 +69,11 @@ namespace Rampastring.Tools
                 stringBuilder.Remove(stringBuilder.Length - 1, 1);
 
             return stringBuilder.ToString();
+        }
+
+        public void GetObjectData(SerializationInfo info, StreamingContext context)
+        {
+            ((ISerializable)stringBuilder).GetObjectData(info, context);
         }
     }
 }
