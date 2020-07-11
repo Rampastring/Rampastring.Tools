@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Globalization;
+using System.Text;
 
 namespace Rampastring.Tools
 {
@@ -13,6 +14,9 @@ namespace Rampastring.Tools
     /// </summary>
     public class IniFile : IIniFile
     {
+        private const string TextBlockBeginIdentifier = "$$$TextBlockBegin$$$";
+        private const string TextBlockEndIdentifier = "$$$TextBlockEnd$$$";
+
         #region Static methods
 
         /// <summary>
@@ -121,7 +125,11 @@ namespace Rampastring.Tools
 
                 if (currentLine[0] == '[')
                 {
-                    string sectionName = currentLine.Substring(1, currentLine.IndexOf(']') - 1);
+                    int sectionNameEndIndex = currentLine.IndexOf(']');
+                    if (sectionNameEndIndex == -1)
+                        throw new IniParseException("Invalid INI section definition: " + currentLine);
+
+                    string sectionName = currentLine.Substring(1, sectionNameEndIndex - 1);
                     int index = Sections.FindIndex(c => c.SectionName == sectionName);
 
                     if (index > -1)
@@ -150,14 +158,50 @@ namespace Rampastring.Tools
                 }
                 else
                 {
+                    string value = currentLine.Substring(equalsIndex + 1).Trim();
+
+                    if (value == TextBlockBeginIdentifier)
+                    {
+                        value = ReadTextBlock(reader);
+                    }
+                    
                     Sections[currentSectionId].AddOrReplaceKey(currentLine.Substring(0, equalsIndex).Trim(),
-                        currentLine.Substring(equalsIndex + 1).Trim());
+                        value);
                 }
             }
 
             reader.Close();
 
             ApplyBaseIni();
+        }
+
+        private string ReadTextBlock(StreamReader reader)
+        {
+            StringBuilder stringBuilder = new StringBuilder();
+
+            while (true)
+            {
+                if (reader.EndOfStream)
+                {
+                    throw new IniParseException("Encountered end-of-file while " +
+                        "reading text block. Text block is not terminated properly.");
+                }
+
+                string line = reader.ReadLine().Trim();
+
+                if (line.Trim() == TextBlockEndIdentifier)
+                    break;
+
+                stringBuilder.Append(line + Environment.NewLine);
+            }
+
+            if (stringBuilder.Length > 0)
+            {
+                stringBuilder.Remove(stringBuilder.Length - Environment.NewLine.Length,
+                    Environment.NewLine.Length);
+            }
+
+            return stringBuilder.ToString();
         }
 
         protected virtual void ApplyBaseIni()
