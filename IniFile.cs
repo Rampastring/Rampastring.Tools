@@ -97,9 +97,14 @@ namespace Rampastring.Tools
 
         /// <summary>
         /// Gets or sets a value that determines whether the parser should only parse 
-        /// pre-determined (via AddSection()) sections or all sections in the INI file.
+        /// pre-determined (via <see cref="AddSection(string)"/>) sections or all sections in the INI file.
         /// </summary>
         public bool AllowNewSections { get; set; } = true;
+
+        /// <summary>
+        /// Comment line to write to the INI file when it's written.
+        /// </summary>
+        public string Comment { get; set; }
 
         protected List<IniSection> Sections = new List<IniSection>();
         private int _lastSectionIndex = 0;
@@ -144,7 +149,7 @@ namespace Rampastring.Tools
                 if (commentStartIndex > -1)
                     currentLine = currentLine.Substring(0, commentStartIndex);
 
-                if (string.IsNullOrEmpty(currentLine))
+                if (string.IsNullOrWhiteSpace(currentLine))
                     continue;
 
                 if (currentLine[0] == '[')
@@ -253,7 +258,7 @@ namespace Rampastring.Tools
         /// <summary>
         /// Writes the INI file to a specified stream.
         /// </summary>
-        /// <param name="stream">The stream to read the INI file from.</param>
+        /// <param name="stream">The stream to write the INI file to.</param>
         public void WriteIniStream(Stream stream)
         {
             WriteIniStream(stream, Encoding);
@@ -267,6 +272,13 @@ namespace Rampastring.Tools
         public void WriteIniStream(Stream stream, Encoding encoding)
         {
             StreamWriter sw = new StreamWriter(stream, encoding);
+
+            if (!string.IsNullOrWhiteSpace(Comment))
+            {
+                sw.WriteLine("; " + Comment);
+                sw.WriteLine();
+            }
+
             foreach (IniSection section in Sections)
             {
                 sw.Write("[" + section.SectionName + "]\r\n");
