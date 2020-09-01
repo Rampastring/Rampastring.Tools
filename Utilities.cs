@@ -20,10 +20,14 @@ namespace Rampastring.Tools
             if (!File.Exists(path))
                 return String.Empty;
 
-            SHA1 sha1 = new SHA1CryptoServiceProvider();
-            Stream stream = File.OpenRead(path);
-            byte[] hash = sha1.ComputeHash(stream);
-            return BytesToString(hash);
+            using (SHA1 sha1 = new SHA1CryptoServiceProvider())
+            {
+                using (Stream stream = File.OpenRead(path))
+                {
+                    byte[] hash = sha1.ComputeHash(stream);
+                    return BytesToString(hash);
+                }
+            }
         }
 
         /// <summary>
@@ -33,10 +37,12 @@ namespace Rampastring.Tools
         /// <returns>A string that represents the input string's SHA1.</returns>
         public static string CalculateSHA1ForString(string str)
         {
-            SHA1 sha1 = new SHA1CryptoServiceProvider();
-            byte[] buffer = Encoding.ASCII.GetBytes(str);
-            byte[] hash = sha1.ComputeHash(buffer);
-            return BytesToString(hash);
+            using (SHA1 sha1 = new SHA1CryptoServiceProvider())
+            {
+                byte[] buffer = Encoding.ASCII.GetBytes(str);
+                byte[] hash = sha1.ComputeHash(buffer);
+                return BytesToString(hash);
+            }
         }
 
         private static string BytesToString(byte[] bytes)
