@@ -239,7 +239,7 @@ namespace Rampastring.Tools
             if (!String.IsNullOrEmpty(basedOn))
             {
                 // Consolidate with the INI file that this INI file is based on
-                string path = Path.GetDirectoryName(FileName) + "\\" + basedOn;
+                string path = Path.GetDirectoryName(FileName) + "/" + basedOn;
                 IniFile baseIni = new IniFile(path);
                 ConsolidateIniFiles(baseIni, this);
                 Sections = baseIni.Sections;
