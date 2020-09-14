@@ -29,6 +29,13 @@ namespace Rampastring.Tools
         void AddOrReplaceKey(string keyName, string value);
 
         /// <summary>
+        /// Removes a key from the INI section.
+        /// Does not throw an exception if the key does not exist.
+        /// </summary>
+        /// <param name="keyName">The name of the INI key to remove.</param>
+        void RemoveKey(string keyName);
+
+        /// <summary>
         /// Returns a boolean value from the INI section.
         /// </summary>
         /// <param name="key">The name of the INI key.</param>

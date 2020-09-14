@@ -61,6 +61,18 @@ namespace Rampastring.Tools
         }
 
         /// <summary>
+        /// Removes a key from the INI section.
+        /// Does not throw an exception if the key does not exist.
+        /// </summary>
+        /// <param name="keyName">The name of the INI key to remove.</param>
+        public void RemoveKey(string keyName)
+        {
+            int index = Keys.FindIndex(k => k.Key == keyName);
+            if (index > -1)
+                Keys.RemoveAt(index);
+        }
+
+        /// <summary>
         /// Returns a string value from the INI section.
         /// </summary>
         /// <param name="key">The name of the INI key.</param>
