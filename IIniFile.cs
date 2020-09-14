@@ -17,6 +17,7 @@ namespace Rampastring.Tools
         bool GetBooleanValue(string section, string key, bool defaultValue);
         double GetDoubleValue(string section, string key, double defaultValue);
         int GetIntValue(string section, string key, int defaultValue);
+        string GetPathStringValue(string section, string key, string defaultValue);
         IniSection GetSection(string name);
         List<string> GetSectionKeys(string sectionName);
         List<string> GetSections();

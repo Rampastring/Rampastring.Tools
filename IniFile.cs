@@ -411,12 +411,7 @@ namespace Rampastring.Tools
             if (iniSection == null)
                 return defaultValue;
 
-            var kvp = iniSection.Keys.Find(k => k.Key == key);
-
-            if (kvp.Value == null)
-                return defaultValue;
-
-            return kvp.Value;
+            return iniSection.GetStringValue(key, defaultValue);
         }
 
         public string GetStringValue(string section, string key, string defaultValue, out bool success)
@@ -496,6 +491,20 @@ namespace Rampastring.Tools
         public bool GetBooleanValue(string section, string key, bool defaultValue)
         {
             return Conversions.BooleanFromString(GetStringValue(section, key, String.Empty), defaultValue);
+        }
+
+        /// <summary>
+        /// Parses and returns a path string from the INI file.
+        /// The path string has all of its directory separators ( / \ )
+        /// replaced with an environment-specific one.
+        /// </summary>
+        public string GetPathStringValue(string section, string key, string defaultValue)
+        {
+            IniSection iniSection = GetSection(section);
+            if (iniSection == null)
+                return defaultValue;
+
+            return iniSection.GetPathStringValue(key, defaultValue);
         }
 
         /// <summary>

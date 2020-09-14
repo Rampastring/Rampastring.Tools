@@ -231,6 +231,16 @@ namespace Rampastring.Tools
         }
 
         /// <summary>
+        /// Parses and returns a path string from the INI section.
+        /// The path string has all of its directory separators ( / \ )
+        /// replaced with an environment-specific one.
+        /// </summary>
+        public string GetPathStringValue(string key, string defaultValue)
+        {
+            return GetStringValue(key, defaultValue).Replace("/", Environment.NewLine).Replace("\\", Environment.NewLine);
+        }
+
+        /// <summary>
         /// Checks if the specified INI key exists in this section.
         /// </summary>
         /// <param name="key">The INI key.</param>

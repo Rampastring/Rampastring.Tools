@@ -150,5 +150,12 @@ namespace Rampastring.Tools
         /// <param name="key">The name of the INI key.</param>
         /// <param name="value">The value of the INI key.</param>
         void SetStringValue(string key, string value);
+
+        /// <summary>
+        /// Parses and returns a path string from the INI section.
+        /// The path string has all of its directory separators ( / \ )
+        /// replaced with an environment-specific one.
+        /// </summary>
+        string GetPathStringValue(string key, string defaultValue);
     }
 }
