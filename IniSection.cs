@@ -4,6 +4,7 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
 
 namespace Rampastring.Tools
 {
@@ -237,7 +238,7 @@ namespace Rampastring.Tools
         /// </summary>
         public string GetPathStringValue(string key, string defaultValue)
         {
-            return GetStringValue(key, defaultValue).Replace("/", Environment.NewLine).Replace("\\", Environment.NewLine);
+            return GetStringValue(key, defaultValue).Replace('/', Path.DirectorySeparatorChar).Replace('\\', Path.DirectorySeparatorChar);
         }
 
         /// <summary>
