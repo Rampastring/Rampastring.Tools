@@ -12,6 +12,7 @@ namespace Rampastring.Tools
 
         void AddSection(IniSection section);
         void AddSection(string sectionName);
+        void RemoveSection(string sectionName);
         void CombineSections(string firstSectionName, string secondSectionName);
         void EraseSectionKeys(string sectionName);
         bool GetBooleanValue(string section, string key, bool defaultValue);

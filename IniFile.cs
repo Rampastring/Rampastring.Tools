@@ -327,6 +327,21 @@ namespace Rampastring.Tools
         }
 
         /// <summary>
+        /// Removes the given section from the INI file.
+        /// Uses case-insensitive string comparison when looking for the section.
+        /// </summary>
+        /// <param name="sectionName">The name of the section to remove.</param>
+        public void RemoveSection(string sectionName)
+        {
+            int index = Sections.FindIndex(section => 
+                    section.SectionName.Equals(sectionName,
+                    StringComparison.InvariantCultureIgnoreCase));
+
+            if (index > -1)
+                Sections.RemoveAt(index);
+        }
+
+        /// <summary>
         /// Moves a section's position to the first place in the INI file's section list.
         /// </summary>
         /// <param name="sectionName">The name of the INI section to move.</param>
