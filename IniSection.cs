@@ -175,12 +175,25 @@ namespace Rampastring.Tools
         /// <summary>
         /// Sets the boolean value of a key in the INI section.
         /// If the key doesn't exist, it is created.
+        /// Uses the <see cref="BooleanStringStyle.TRUEFALSE"/> boolean string style.
         /// </summary>
         /// <param name="key">The name of the INI key.</param>
         /// <param name="value">The value of the INI key.</param>
         public void SetBooleanValue(string key, bool value)
         {
-            string strValue = Conversions.BooleanToString(value, BooleanStringStyle.TRUEFALSE);
+            SetBooleanValue(key, value, BooleanStringStyle.TRUEFALSE);
+        }
+
+        /// <summary>
+        /// Sets the boolean value of a key in the INI section.
+        /// If the key doesn't exist, it is created.
+        /// </summary>
+        /// <param name="key">The name of the INI key.</param>
+        /// <param name="value">The value of the INI key.</param>
+        /// <param name="booleanStringStyle">The boolean string style.</param>
+        public void SetBooleanValue(string key, bool value, BooleanStringStyle booleanStringStyle)
+        {
+            string strValue = Conversions.BooleanToString(value, booleanStringStyle);
             AddOrReplaceKey(key, strValue);
         }
 
