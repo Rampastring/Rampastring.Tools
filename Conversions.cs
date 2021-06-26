@@ -46,13 +46,28 @@ namespace Rampastring.Tools
         /// <returns>A string that represents the boolean with the specified style.</returns>
         public static string BooleanToString(bool boolean, BooleanStringStyle stringStyle)
         {
-            string trueString = "True";
-            string falseString = "False";
+            string trueString;
+            string falseString;
 
-            if (stringStyle == BooleanStringStyle.YESNO)
+            switch (stringStyle)
             {
-                trueString = "Yes";
-                falseString = "No";
+                case BooleanStringStyle.TRUEFALSE_LOWERCASE:
+                    trueString = "true";
+                    falseString = "false";
+                    break;
+                case BooleanStringStyle.YESNO:
+                    trueString = "Yes";
+                    falseString = "No";
+                    break;
+                case BooleanStringStyle.YESNO_LOWERCASE:
+                    trueString = "yes";
+                    falseString = "no";
+                    break;
+                default:
+                case BooleanStringStyle.TRUEFALSE:
+                    trueString = "True";
+                    falseString = "False";
+                    break;
             }
 
             return boolean ? trueString : falseString;
