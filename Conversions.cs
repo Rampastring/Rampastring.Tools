@@ -63,6 +63,10 @@ namespace Rampastring.Tools
                     trueString = "yes";
                     falseString = "no";
                     break;
+                case BooleanStringStyle.ONEZERO:
+                    trueString = "1";
+                    falseString = "0";
+                    break;
                 default:
                 case BooleanStringStyle.TRUEFALSE:
                     trueString = "True";
