@@ -1,0 +1,13 @@
+# ContinuousDeployment forces the build number to be incremented by 1 for every commit that comes after the
+# most recent tag version.
+mode: ContinuousDeployment
+
+# When a version is created by a single commit, it will contain this suffix and an auto incremented build number.
+# Example: 1.1.7897-alpha0001
+# When a version is created by creating a tag/release, it will NOT contain this suffix.
+# Example: 1.1.7897
+continuous-delivery-fallback-tag: alpha
+branches: {}
+ignore:
+  sha: []
+merge-message-formats: {}

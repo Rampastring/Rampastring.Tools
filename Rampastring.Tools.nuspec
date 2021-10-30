@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package >
+  <metadata>
+    <id>devo1929.Rampastring.Tools</id>
+    <version>0.0.0</version>
+    <authors>Rampastring</authors>
+    <owners>Rampastring</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <license type="expression">MIT</license>
+    <projectUrl>https://github.com/Rampastring/Rampastring.Tools</projectUrl>
+    <description>Rampastring's Generally Useful Library</description>
+    <copyright>Copyright 2021</copyright>
+    <dependencies>
+      <group targetFramework=".NETFramework4.0" />
+    </dependencies>
+  </metadata>
+</package>

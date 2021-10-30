@@ -1,0 +1,81 @@
+name: publish
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+  workflow_dispatch:
+  release:
+    types:
+      - created
+
+jobs:
+  publish:
+    runs-on: windows-2019
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          # this is required for GitVersion to work
+          fetch-depth: 0
+
+      - name: Setup Dotnet
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '3.1.x'
+        env:
+          ACTIONS_ALLOW_UNSECURE_COMMANDS: 'true'
+
+      - name: Setup NuGet
+        uses: NuGet/setup-nuget@v1.0.2
+        with:
+          nuget-api-key: ${{ secrets.NUGET_APIKEY }}
+          nuget-version: 5.5.1
+        env:
+          ACTIONS_ALLOW_UNSECURE_COMMANDS: 'true'
+
+      - name: Setup GitVersion
+        uses: gittools/actions/gitversion/setup@v0.9
+        with:
+          versionSpec: '5.1.x'
+        env:
+          ACTIONS_ALLOW_UNSECURE_COMMANDS: 'true'
+
+      # generate the proper version
+      - name: Run GitVersion
+        run: dotnet gitversion /updateassemblyinfo AssemblyGitInfo.cs /ensureassemblyinfo /output buildserver
+        env:
+          ACTIONS_ALLOW_UNSECURE_COMMANDS: 'true'
+
+      # restore all dependencies
+      - name: Nuget Restore
+        run: nuget restore Rampastring.Tools.csproj -PackagesDirectory packages
+
+      # build the project
+      - name: Build Project
+        run: dotnet msbuild Rampastring.Tools.csproj -property:Configuration=Release
+
+      # create a nuget package
+      - name: Nuget Package
+        run: nuget pack Rampastring.Tools.nuspec -BasePath bin\Release -OutputDirectory output_package -PackagesDirectory packages -Version ${{ env.GITVERSION_NUGETVERSION }}
+
+      # publish generated nuget packages to Nuget.org
+      - name: Nuget Publish
+        run: nuget push output_package\*.nupkg -Source https://api.nuget.org/v3/index.json
+        continue-on-error: true
+
+      # upload our nuget package to github artifacts
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v1.0.0
+        with:
+          name: nupkg
+          path: output_package/
+
+      # upload our dll to github artifacts
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v1.0.0
+        with:
+          name: build_artifacts
+          path: bin/Release

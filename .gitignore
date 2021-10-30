@@ -23,3 +23,6 @@ Icon?
 
 # Dolphin
 .directory
+/gitversion.json
+/packages
+/Properties/AssemblyGitVersionInfo.cs

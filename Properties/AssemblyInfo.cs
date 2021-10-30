@@ -28,7 +28,6 @@ using System.Runtime.InteropServices;
 //      Build Number
 //      Revision
 //
-// You can specify all the values or you can default the Build and Revision Numbers 
-// by using the '*' as shown below:
-// [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.1.*")]
+// Do not change.
+// This will be automatically updated by the Github Actions/GitVersion CLI workflow in a file AssemblyGitVersionInfo.cs.
+// [assembly: AssemblyVersion("x.x.x.x")]
