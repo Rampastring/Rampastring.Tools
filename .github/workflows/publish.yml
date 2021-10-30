@@ -45,7 +45,7 @@ jobs:
 
       # generate the proper version
       - name: Run GitVersion
-        run: dotnet gitversion /updateassemblyinfo AssemblyGitInfo.cs /ensureassemblyinfo /output buildserver
+        run: dotnet gitversion /updateassemblyinfo AssemblyGitInfo.cs /ensureassemblyinfo
         env:
           ACTIONS_ALLOW_UNSECURE_COMMANDS: 'true'
 
