@@ -2,7 +2,7 @@
 
 namespace Rampastring.Tools
 {
-    class IniParseException : Exception
+    public class IniParseException : Exception
     {
         public IniParseException(string message) : base(message)
         {
