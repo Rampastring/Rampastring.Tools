@@ -238,7 +238,7 @@ namespace Rampastring.Tools
             if (!String.IsNullOrEmpty(basedOn))
             {
                 // Consolidate with the INI file that this INI file is based on
-                string path = SafePath.Combine(SafePath.GetFileDirectoryName(FileName), basedOn);
+                string path = SafePath.CombineFilePath(SafePath.GetFileDirectoryName(FileName), basedOn);
                 IniFile baseIni = new IniFile(path);
                 ConsolidateIniFiles(baseIni, this);
                 Sections = baseIni.Sections;

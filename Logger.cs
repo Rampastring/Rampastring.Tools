@@ -36,7 +36,7 @@ namespace Rampastring.Tools
                 {
                     try
                     {
-                        using StreamWriter sw = new StreamWriter(SafePath.Combine(LogPath, LogFileName), true);
+                        using StreamWriter sw = new StreamWriter(SafePath.CombineFilePath(LogPath, LogFileName), true);
 
                         DateTime now = DateTime.Now;
 
@@ -65,7 +65,7 @@ namespace Rampastring.Tools
                 {
                     try
                     {
-                        using StreamWriter sw = new StreamWriter(SafePath.Combine(LogPath, fileName), true);
+                        using StreamWriter sw = new StreamWriter(SafePath.CombineFilePath(LogPath, fileName), true);
 
                         DateTime now = DateTime.Now;
 
@@ -94,7 +94,7 @@ namespace Rampastring.Tools
                 {
                     try
                     {
-                        using StreamWriter sw = new StreamWriter(SafePath.Combine(LogPath, LogFileName), true);
+                        using StreamWriter sw = new StreamWriter(SafePath.CombineFilePath(LogPath, LogFileName), true);
 
                         DateTime now = DateTime.Now;
 
@@ -123,7 +123,7 @@ namespace Rampastring.Tools
                 {
                     try
                     {
-                        using StreamWriter sw = new StreamWriter(SafePath.Combine(LogPath, LogFileName), true);
+                        using StreamWriter sw = new StreamWriter(SafePath.CombineFilePath(LogPath, LogFileName), true);
 
                         DateTime now = DateTime.Now;
 
@@ -149,7 +149,7 @@ namespace Rampastring.Tools
 
                 try
                 {
-                    using StreamWriter sw = new StreamWriter(SafePath.Combine(LogPath, LogFileName), true);
+                    using StreamWriter sw = new StreamWriter(SafePath.CombineFilePath(LogPath, LogFileName), true);
 
                     DateTime now = DateTime.Now;
 
@@ -174,7 +174,7 @@ namespace Rampastring.Tools
 
                 try
                 {
-                    using StreamWriter sw = new StreamWriter(SafePath.Combine(LogPath, fileName), true);
+                    using StreamWriter sw = new StreamWriter(SafePath.CombineFilePath(LogPath, fileName), true);
 
                     DateTime now = DateTime.Now;
 
