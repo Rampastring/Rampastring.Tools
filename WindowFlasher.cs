@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Runtime.InteropServices;
-using System.Windows.Forms;
 
 namespace Rampastring.Tools
 {
@@ -32,15 +31,14 @@ namespace Rampastring.Tools
         /// <summary>
         /// Flashes a form's window in the taskbar.
         /// </summary>
-        /// <param name="form">The form to flash.</param>
+        /// <param name="windowHandle">The handle of the window to flash.</param>
         /// <returns>The return value fo FlashWindowEx.</returns>
-        public static bool FlashWindowEx(Form form)
+        public static bool FlashWindowEx(IntPtr windowHandle)
         {
-            IntPtr hWnd = form.Handle;
             FLASHWINFO fInfo = new FLASHWINFO();
 
             fInfo.cbSize = Convert.ToUInt32(Marshal.SizeOf(fInfo));
-            fInfo.hwnd = hWnd;
+            fInfo.hwnd = windowHandle;
             fInfo.dwFlags = FLASHW_ALL | FLASHW_TIMERNOFG;
             fInfo.uCount = UInt32.MaxValue;
             fInfo.dwTimeout = 0;
