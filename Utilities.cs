@@ -17,10 +17,13 @@ namespace Rampastring.Tools
         /// <returns>A string that represents the file's SHA1.</returns>
         public static string CalculateSHA1ForFile(string path)
         {
+            if (string.IsNullOrWhiteSpace(path))
+                return string.Empty;
+
             FileInfo fileInfo = SafePath.GetFile(path);
 
             if (!fileInfo.Exists)
-                return String.Empty;
+                return string.Empty;
 
             using SHA1 sha1 = new SHA1CryptoServiceProvider();
             using Stream stream = fileInfo.OpenRead();
