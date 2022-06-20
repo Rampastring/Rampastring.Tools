@@ -33,7 +33,9 @@ namespace Rampastring.Tools
                 dwTimeout = 0u
             };
 
-            return PInvoke.FlashWindowEx(pfwi);
+            BOOL result = PInvoke.FlashWindowEx(pfwi);
+
+            return result.Value != 0;
         }
     }
 }
