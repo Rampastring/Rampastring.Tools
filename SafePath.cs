@@ -18,9 +18,7 @@ namespace Rampastring.Tools
         /// <returns>The combined directory path of all <paramref name="paths"/>, with trailing separator character and with leading separator character if the path has a root.</returns>
         public static string CombineDirectoryPath(params string[] paths)
         {
-            string result = Combine(true, paths);
-
-            return result;
+            return Combine(true, paths);
         }
 
         /// <summary>
@@ -31,22 +29,18 @@ namespace Rampastring.Tools
         /// <returns>The combined directory path and file name of all <paramref name="paths"/> with leading separator character if the path has a root.</returns>
         public static string CombineFilePath(params string[] paths)
         {
-            string result = Combine(false, paths);
-
-            return result;
+            return Combine(false, paths);
         }
 
         /// <summary>
         /// Safely combines multiple directory paths for all platforms.
         /// The first path can be a relative or absolute path.
         /// </summary>
-        /// <param name="paths">Ordered list of directory paths with a file name.</param>
+        /// <param name="paths">Ordered list of directory paths.</param>
         /// <returns>A <see cref="DirectoryInfo"/> instance representing the combined directory path of all <paramref name="paths"/>.</returns>
         public static DirectoryInfo GetDirectory(params string[] paths)
         {
-            var directoryInfo = new DirectoryInfo(CombineDirectoryPath(paths));
-
-            return directoryInfo;
+            return new DirectoryInfo(CombineDirectoryPath(paths));
         }
 
         /// <summary>
@@ -57,9 +51,7 @@ namespace Rampastring.Tools
         /// <returns>A <see cref="FileInfo"/> instance representing the combined directory path and file name of all <paramref name="paths"/>.</returns>
         public static FileInfo GetFile(params string[] paths)
         {
-            var fileInfo = new FileInfo(CombineFilePath(paths));
-
-            return fileInfo;
+            return new FileInfo(CombineFilePath(paths));
         }
 
         /// <summary>
@@ -90,7 +82,6 @@ namespace Rampastring.Tools
 
         /// <summary>
         /// Safely retrieves the name of a directory represented by multiple directory paths and a file name for all platforms.
-        /// If the directory does not exist the delete operation is not performed.
         /// </summary>
         /// <param name="paths">Ordered list of directory paths and a file name.</param>
         /// <returns>The name (not path) of the directory a given file resides in.</returns>
