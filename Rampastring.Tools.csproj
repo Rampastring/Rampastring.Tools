@@ -7,9 +7,9 @@
     <Product></Product>
     <Copyright>Copyright © Rami 'Rampastring' Pasanen 2016-2021</Copyright>
     <Trademark></Trademark>
-    <Version>1.1.0.0</Version>
-    <FileVersion>1.1.0.0</FileVersion>
-    <InformationalVersion>1.1.0.0</InformationalVersion>
+    <Version>2.0.0.0</Version>
+    <FileVersion>2.0.0.0</FileVersion>
+    <InformationalVersion>2.0.0.0</InformationalVersion>
     <AssemblyName>Rampastring.Tools</AssemblyName>
     <RootNamespace>Rampastring.Tools</RootNamespace>
     <ComVisible>false</ComVisible>
