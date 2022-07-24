@@ -111,13 +111,14 @@ namespace Rampastring.Tools
 
         public void Parse()
         {
-            if (File.Exists(FileName))
-            {
-                using (var stream = File.OpenRead(FileName))
-                {
-                    ParseIniFile(stream);
-                }
-            }
+            FileInfo fileInfo = SafePath.GetFile(FileName);
+
+            if (!fileInfo.Exists)
+                return;
+
+            using FileStream stream = fileInfo.OpenRead();
+
+            ParseIniFile(stream);
         }
 
         /// <summary>
@@ -136,7 +137,7 @@ namespace Rampastring.Tools
             if (encoding == null)
                 encoding = Encoding;
 
-            var reader = new StreamReader(stream, encoding);
+            using var reader = new StreamReader(stream, encoding);
 
             int currentSectionId = -1;
             string currentLine = string.Empty;
@@ -193,13 +194,11 @@ namespace Rampastring.Tools
                     {
                         value = ReadTextBlock(reader);
                     }
-                    
+
                     Sections[currentSectionId].AddOrReplaceKey(currentLine.Substring(0, equalsIndex).Trim(),
                         value);
                 }
             }
-
-            reader.Close();
 
             ApplyBaseIni();
         }
@@ -239,7 +238,7 @@ namespace Rampastring.Tools
             if (!String.IsNullOrEmpty(basedOn))
             {
                 // Consolidate with the INI file that this INI file is based on
-                string path = Path.GetDirectoryName(FileName) + "/" + basedOn;
+                string path = SafePath.CombineFilePath(SafePath.GetFileDirectoryName(FileName), basedOn);
                 IniFile baseIni = new IniFile(path);
                 ConsolidateIniFiles(baseIni, this);
                 Sections = baseIni.Sections;
@@ -271,7 +270,7 @@ namespace Rampastring.Tools
         /// <param name="encoding">The encoding of the INI file. Default for UTF-8.</param>
         public void WriteIniStream(Stream stream, Encoding encoding)
         {
-            StreamWriter sw = new StreamWriter(stream, encoding);
+            using StreamWriter sw = new StreamWriter(stream, encoding);
 
             if (!string.IsNullOrWhiteSpace(Comment))
             {
@@ -290,7 +289,6 @@ namespace Rampastring.Tools
             }
 
             sw.Write("\r\n");
-            sw.Close();
         }
 
         /// <summary>
@@ -299,13 +297,14 @@ namespace Rampastring.Tools
         /// <param name="filePath">The path of the file to write to.</param>
         public void WriteIniFile(string filePath)
         {
-            if (File.Exists(filePath))
-                File.Delete(filePath);
+            FileInfo fileInfo = SafePath.GetFile(filePath);
 
-            using (var stream = File.OpenWrite(filePath))
-            {
-                WriteIniStream(stream);
-            }
+            if (fileInfo.Exists)
+                fileInfo.Delete();
+
+            using var stream = fileInfo.OpenWrite();
+
+            WriteIniStream(stream);
         }
 
         /// <summary>
@@ -333,7 +332,7 @@ namespace Rampastring.Tools
         /// <param name="sectionName">The name of the section to remove.</param>
         public void RemoveSection(string sectionName)
         {
-            int index = Sections.FindIndex(section => 
+            int index = Sections.FindIndex(section =>
                     section.SectionName.Equals(sectionName,
                     StringComparison.InvariantCultureIgnoreCase));
 

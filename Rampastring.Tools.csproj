@@ -1,17 +1,15 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>net48;net6.0-windows10.0.22000.0</TargetFrameworks>
-    <TargetPlatformMinVersion>7.0</TargetPlatformMinVersion>
-    <UseWindowsForms>true</UseWindowsForms>
+    <TargetFrameworks>net48;net6.0</TargetFrameworks>
     <Title></Title>
     <Description>Rampastring's Generally Useful Library</Description>
     <Company>Rampastring</Company>
     <Product></Product>
     <Copyright>Copyright © Rami 'Rampastring' Pasanen 2016-2021</Copyright>
     <Trademark></Trademark>
-    <Version>1.1.0.0</Version>
-    <FileVersion>1.1.0.0</FileVersion>
-    <InformationalVersion>1.1.0.0</InformationalVersion>
+    <Version>2.0.0.0</Version>
+    <FileVersion>2.0.0.0</FileVersion>
+    <InformationalVersion>2.0.0.0</InformationalVersion>
     <AssemblyName>Rampastring.Tools</AssemblyName>
     <RootNamespace>Rampastring.Tools</RootNamespace>
     <ComVisible>false</ComVisible>
@@ -32,6 +30,9 @@
     <None Include="README.md" Pack="true" PackagePath="\" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Microsoft.Windows.CsWin32" Version="0.2.10-beta">
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
     <PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.435">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
