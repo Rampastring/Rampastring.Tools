@@ -1,60 +1,65 @@
-﻿using System;
+﻿using System.Globalization;
 using System.IO;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace Rampastring.Tools
+namespace Rampastring.Tools;
+
+/// <summary>
+/// A static class that contains various useful functions.
+/// </summary>
+public static class Utilities
 {
     /// <summary>
-    /// A static class that contains various useful functions.
+    /// Calculates the SHA1 checksum of a file.
     /// </summary>
-    public static class Utilities
+    /// <param name="path">The file's path.</param>
+    /// <returns>A string that represents the file's SHA1.</returns>
+    public static string CalculateSHA1ForFile(string path)
     {
-        /// <summary>
-        /// Calculates the SHA1 checksum of a file.
-        /// </summary>
-        /// <param name="path">The file's path.</param>
-        /// <returns>A string that represents the file's SHA1.</returns>
-        public static string CalculateSHA1ForFile(string path)
+        if (string.IsNullOrWhiteSpace(path))
+            return string.Empty;
+
+        FileInfo fileInfo = SafePath.GetFile(path);
+
+        if (!fileInfo.Exists)
+            return string.Empty;
+
+#pragma warning disable CA5350 // Do Not Use Weak Cryptographic Algorithms
+        using SHA1 sha1 = new SHA1CryptoServiceProvider();
+#pragma warning restore CA5350 // Do Not Use Weak Cryptographic Algorithms
+        using Stream stream = fileInfo.OpenRead();
+        byte[] hash = sha1.ComputeHash(stream);
+
+        return BytesToString(hash);
+    }
+
+    /// <summary>
+    /// Calculates the SHA1 checksum of a string.
+    /// </summary>
+    /// <param name="str">The string.</param>
+    /// <returns>A string that represents the input string's SHA1.</returns>
+    public static string CalculateSHA1ForString(string str)
+    {
+#pragma warning disable CA5350 // Do Not Use Weak Cryptographic Algorithms
+        using (SHA1 sha1 = new SHA1CryptoServiceProvider())
         {
-            if (string.IsNullOrWhiteSpace(path))
-                return string.Empty;
-
-            FileInfo fileInfo = SafePath.GetFile(path);
-
-            if (!fileInfo.Exists)
-                return string.Empty;
-
-            using SHA1 sha1 = new SHA1CryptoServiceProvider();
-            using Stream stream = fileInfo.OpenRead();
-            byte[] hash = sha1.ComputeHash(stream);
-
+            byte[] buffer = Encoding.ASCII.GetBytes(str);
+            byte[] hash = sha1.ComputeHash(buffer);
             return BytesToString(hash);
         }
+#pragma warning restore CA5350 // Do Not Use Weak Cryptographic Algorithms
+    }
 
-        /// <summary>
-        /// Calculates the SHA1 checksum of a string.
-        /// </summary>
-        /// <param name="str">The string.</param>
-        /// <returns>A string that represents the input string's SHA1.</returns>
-        public static string CalculateSHA1ForString(string str)
+    private static string BytesToString(byte[] bytes)
+    {
+        var sb = new StringBuilder();
+
+        for (int i = 0; i < bytes.Length; i++)
         {
-            using (SHA1 sha1 = new SHA1CryptoServiceProvider())
-            {
-                byte[] buffer = Encoding.ASCII.GetBytes(str);
-                byte[] hash = sha1.ComputeHash(buffer);
-                return BytesToString(hash);
-            }
+            sb.Append(bytes[i].ToString("x2", CultureInfo.InvariantCulture));
         }
 
-        private static string BytesToString(byte[] bytes)
-        {
-            StringBuilder sb = new StringBuilder();
-            for (int i = 0; i < bytes.Length; i++)
-            {
-                sb.Append(bytes[i].ToString("x2"));
-            }
-            return sb.ToString();
-        }
+        return sb.ToString();
     }
 }
