@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace Rampastring.Tools.INIProperties
+﻿namespace Rampastring.Tools.INIProperties
 {
     /// <summary>
     /// A boolean to be parsed from an INI file.

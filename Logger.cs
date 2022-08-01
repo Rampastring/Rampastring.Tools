@@ -36,7 +36,7 @@ namespace Rampastring.Tools
                 {
                     try
                     {
-                        StreamWriter sw = new StreamWriter(LogPath + LogFileName, true);
+                        using StreamWriter sw = new StreamWriter(SafePath.CombineFilePath(LogPath, LogFileName), true);
 
                         DateTime now = DateTime.Now;
 
@@ -46,8 +46,6 @@ namespace Rampastring.Tools
                         sb.Append(data);
 
                         sw.WriteLine(sb.ToString());
-
-                        sw.Close();
                     }
                     catch
                     {
@@ -67,7 +65,7 @@ namespace Rampastring.Tools
                 {
                     try
                     {
-                        StreamWriter sw = new StreamWriter(LogPath + fileName, true);
+                        using StreamWriter sw = new StreamWriter(SafePath.CombineFilePath(LogPath, fileName), true);
 
                         DateTime now = DateTime.Now;
 
@@ -77,8 +75,6 @@ namespace Rampastring.Tools
                         sb.Append(data);
 
                         sw.WriteLine(sb.ToString());
-
-                        sw.Close();
                     }
                     catch
                     {
@@ -98,7 +94,7 @@ namespace Rampastring.Tools
                 {
                     try
                     {
-                        StreamWriter sw = new StreamWriter(LogPath + LogFileName, true);
+                        using StreamWriter sw = new StreamWriter(SafePath.CombineFilePath(LogPath, LogFileName), true);
 
                         DateTime now = DateTime.Now;
 
@@ -108,8 +104,6 @@ namespace Rampastring.Tools
                         sb.Append(string.Format(data, f1));
 
                         sw.WriteLine(sb.ToString());
-
-                        sw.Close();
                     }
                     catch
                     {
@@ -129,7 +123,7 @@ namespace Rampastring.Tools
                 {
                     try
                     {
-                        StreamWriter sw = new StreamWriter(LogPath + LogFileName, true);
+                        using StreamWriter sw = new StreamWriter(SafePath.CombineFilePath(LogPath, LogFileName), true);
 
                         DateTime now = DateTime.Now;
 
@@ -139,8 +133,6 @@ namespace Rampastring.Tools
                         sb.Append(string.Format(data, f1, f2));
 
                         sw.WriteLine(sb.ToString());
-
-                        sw.Close();
                     }
                     catch
                     {
@@ -157,7 +149,7 @@ namespace Rampastring.Tools
 
                 try
                 {
-                    StreamWriter sw = new StreamWriter(LogPath + LogFileName, true);
+                    using StreamWriter sw = new StreamWriter(SafePath.CombineFilePath(LogPath, LogFileName), true);
 
                     DateTime now = DateTime.Now;
 
@@ -167,8 +159,6 @@ namespace Rampastring.Tools
                     sb.Append(data);
 
                     sw.WriteLine(sb.ToString());
-
-                    sw.Close();
                 }
                 catch
                 {
@@ -184,7 +174,7 @@ namespace Rampastring.Tools
 
                 try
                 {
-                    StreamWriter sw = new StreamWriter(LogPath + fileName, true);
+                    using StreamWriter sw = new StreamWriter(SafePath.CombineFilePath(LogPath, fileName), true);
 
                     DateTime now = DateTime.Now;
 
@@ -194,8 +184,6 @@ namespace Rampastring.Tools
                     sb.Append(data);
 
                     sw.WriteLine(sb.ToString());
-
-                    sw.Close();
                 }
                 catch
                 {
