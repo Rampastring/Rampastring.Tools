@@ -1,1 +1,0 @@
-dotnet build .\Rampastring.Tools.csproj -c Release
