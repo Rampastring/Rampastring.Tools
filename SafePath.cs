@@ -56,7 +56,7 @@ public static class SafePath
 
     /// <summary>
     /// Safely delete a file represented by multiple directory paths with a file name for all platforms.
-    /// If the file does not exist the delete operation is not performed.
+    /// Does not throw an exception if the file or directory path does not exist.
     /// </summary>
     /// <param name="paths">Ordered list of directory paths with a file name.</param>
     public static void DeleteFileIfExists(params string[] paths)
@@ -69,15 +69,16 @@ public static class SafePath
 
     /// <summary>
     /// Safely delete a directory represented by multiple directory paths for all platforms.
-    /// If the directory does not exist the delete operation is not performed.
+    /// Does not throw an exception if the directory path does not exist.
     /// </summary>
+    /// <param name="recursive">true to remove directories, subdirectories, and files in path; otherwise, false.</param>
     /// <param name="paths">Ordered list of directory paths.</param>
-    public static void DeleteDirectoryIfExists(params string[] paths)
+    public static void DeleteDirectoryIfExists(bool recursive, params string[] paths)
     {
         var directoryInfo = new DirectoryInfo(CombineFilePath(paths));
 
         if (directoryInfo.Exists)
-            directoryInfo.Delete();
+            directoryInfo.Delete(recursive);
     }
 
     /// <summary>
