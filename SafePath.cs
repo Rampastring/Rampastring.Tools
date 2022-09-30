@@ -95,6 +95,14 @@ public static class SafePath
 
     private static string Combine(bool isDirectoryPath, params string[] paths)
     {
+        if (paths is null)
+            return null;
+
+        paths = paths.Where(p => !string.IsNullOrWhiteSpace(p)).ToArray();
+
+        if (!paths.Any())
+            return null;
+
         if (paths.Length == 1)
             paths = new[] { paths[0], null };
 
