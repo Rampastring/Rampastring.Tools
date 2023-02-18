@@ -1,9 +1,9 @@
-﻿using System.Linq;
-using System.IO;
-using System;
-using System.Runtime.InteropServices;
+﻿namespace Rampastring.Tools;
 
-namespace Rampastring.Tools;
+using System;
+using System.IO;
+using System.Linq;
+using System.Runtime.InteropServices;
 
 /// <summary>
 /// Provides safe cross platform Path handling.
@@ -16,10 +16,7 @@ public static class SafePath
     /// </summary>
     /// <param name="paths">Ordered list of directory paths.</param>
     /// <returns>The combined directory path of all <paramref name="paths"/>, with trailing separator character and with leading separator character if the path has a root.</returns>
-    public static string CombineDirectoryPath(params string[] paths)
-    {
-        return Combine(true, paths);
-    }
+    public static string CombineDirectoryPath(params string[] paths) => Combine(true, paths);
 
     /// <summary>
     /// Safely combines multiple directory paths with a file name for all platforms.
@@ -27,10 +24,7 @@ public static class SafePath
     /// </summary>
     /// <param name="paths">Ordered list of directory paths with a file name.</param>
     /// <returns>The combined directory path and file name of all <paramref name="paths"/> with leading separator character if the path has a root.</returns>
-    public static string CombineFilePath(params string[] paths)
-    {
-        return Combine(false, paths);
-    }
+    public static string CombineFilePath(params string[] paths) => Combine(false, paths);
 
     /// <summary>
     /// Safely combines multiple directory paths for all platforms.
@@ -38,10 +32,7 @@ public static class SafePath
     /// </summary>
     /// <param name="paths">Ordered list of directory paths.</param>
     /// <returns>A <see cref="DirectoryInfo"/> instance representing the combined directory path of all <paramref name="paths"/>.</returns>
-    public static DirectoryInfo GetDirectory(params string[] paths)
-    {
-        return new(CombineDirectoryPath(paths));
-    }
+    public static DirectoryInfo GetDirectory(params string[] paths) => new(CombineDirectoryPath(paths));
 
     /// <summary>
     /// Safely combines multiple directory paths with a file name for all platforms.
@@ -49,10 +40,7 @@ public static class SafePath
     /// </summary>
     /// <param name="paths">Ordered list of directory paths with a file name.</param>
     /// <returns>A <see cref="FileInfo"/> instance representing the combined directory path and file name of all <paramref name="paths"/>.</returns>
-    public static FileInfo GetFile(params string[] paths)
-    {
-        return new(CombineFilePath(paths));
-    }
+    public static FileInfo GetFile(params string[] paths) => new(CombineFilePath(paths));
 
     /// <summary>
     /// Safely delete a file represented by multiple directory paths with a file name for all platforms.

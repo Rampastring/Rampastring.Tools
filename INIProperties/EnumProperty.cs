@@ -1,18 +1,24 @@
-﻿using System;
+﻿namespace Rampastring.Tools.INIProperties;
 
-namespace Rampastring.Tools.INIProperties;
+using System;
 
 public class EnumProperty<T> : GenericINIProperty<T>, IIniProperty
 {
-    public EnumProperty() : this((T)Activator.CreateInstance(typeof(T))) { }
+    public EnumProperty()
+        : this((T)Activator.CreateInstance(typeof(T)))
+    {
+    }
 
-    public EnumProperty(T defaultValue) : base(defaultValue)
+    public EnumProperty(T defaultValue)
+        : base(defaultValue)
     {
     }
 
     public override void ParseValue(IniFile iniFile, string sectionName, string keyName)
     {
-        Value = (T)Enum.Parse(typeof(T),
-            iniFile.GetStringValue(sectionName, keyName, DefaultValue.ToString()), true);
+        Value = (T)Enum.Parse(
+            typeof(T),
+            iniFile.GetStringValue(sectionName, keyName, DefaultValue.ToString()),
+            true);
     }
 }

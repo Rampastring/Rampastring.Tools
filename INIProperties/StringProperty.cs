@@ -5,14 +5,15 @@
 /// </summary>
 public class StringProperty : GenericINIProperty<string>, IIniProperty
 {
-    public StringProperty() : this(string.Empty) { }
-
-    public StringProperty(string defaultValue) : base(defaultValue)
+    public StringProperty()
+        : this(string.Empty)
     {
     }
 
-    public override void ParseValue(IniFile iniFile, string sectionName, string keyName)
+    public StringProperty(string defaultValue)
+        : base(defaultValue)
     {
-        Value = iniFile.GetStringValue(sectionName, keyName, DefaultValue);
     }
+
+    public override void ParseValue(IniFile iniFile, string sectionName, string keyName) => Value = iniFile.GetStringValue(sectionName, keyName, DefaultValue);
 }

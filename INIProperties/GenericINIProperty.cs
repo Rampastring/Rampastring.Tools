@@ -18,8 +18,7 @@ public abstract class GenericINIProperty<T> : IIniProperty
 
     public abstract void ParseValue(IniFile iniFile, string sectionName, string keyName);
 
-    public override string ToString()
-    {
-        return Value.ToString();
-    }
+    public override string ToString() => Value.ToString();
+
+    public T ToT() => Value;
 }

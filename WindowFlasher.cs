@@ -1,9 +1,9 @@
-﻿using System;
-using Windows.Win32;
-using Windows.Win32.UI.WindowsAndMessaging;
-using Windows.Win32.Foundation;
+﻿namespace Rampastring.Tools;
 
-namespace Rampastring.Tools;
+using System;
+using Windows.Win32;
+using Windows.Win32.Foundation;
+using Windows.Win32.UI.WindowsAndMessaging;
 
 public static class WindowFlasher
 {
@@ -17,16 +17,16 @@ public static class WindowFlasher
 #endif
     public static bool FlashWindowEx(IntPtr windowHandle)
     {
-        int cbSize;
+        int size;
 
         unsafe
         {
-            cbSize = sizeof(FLASHWINFO);
+            size = sizeof(FLASHWINFO);
         }
 
         var pfwi = new FLASHWINFO
         {
-            cbSize = (uint)cbSize,
+            cbSize = (uint)size,
             hwnd = (HWND)windowHandle,
             dwFlags = FLASHWINFO_FLAGS.FLASHW_ALL | FLASHWINFO_FLAGS.FLASHW_TIMERNOFG,
             uCount = uint.MaxValue,

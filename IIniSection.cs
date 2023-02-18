@@ -1,7 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿namespace Rampastring.Tools;
 
-namespace Rampastring.Tools;
+using System;
+using System.Collections.Generic;
 
 public interface IIniSection
 {

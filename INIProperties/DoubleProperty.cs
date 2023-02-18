@@ -5,14 +5,15 @@
 /// </summary>
 public class DoubleProperty : GenericINIProperty<double>, IIniProperty
 {
-    public DoubleProperty() : this(0.0) { }
-
-    public DoubleProperty(double defaultValue) : base(defaultValue)
+    public DoubleProperty()
+        : this(0.0)
     {
     }
 
-    public override void ParseValue(IniFile iniFile, string sectionName, string keyName)
+    public DoubleProperty(double defaultValue)
+        : base(defaultValue)
     {
-        Value = iniFile.GetDoubleValue(sectionName, keyName, DefaultValue);
     }
+
+    public override void ParseValue(IniFile iniFile, string sectionName, string keyName) => Value = iniFile.GetDoubleValue(sectionName, keyName, DefaultValue);
 }

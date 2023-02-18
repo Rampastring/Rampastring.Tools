@@ -1,8 +1,8 @@
-﻿using System.Globalization;
+﻿namespace Rampastring.Tools;
+
+using System.Globalization;
 using System.Runtime.Serialization;
 using System.Text;
-
-namespace Rampastring.Tools;
 
 /// <summary>
 /// A StringBuilder that can automatically add a separator between
@@ -10,6 +10,8 @@ namespace Rampastring.Tools;
 /// </summary>
 public class ExtendedStringBuilder : ISerializable
 {
+    private readonly StringBuilder stringBuilder;
+
     public ExtendedStringBuilder()
     {
         stringBuilder = new();
@@ -35,22 +37,15 @@ public class ExtendedStringBuilder : ISerializable
         Separator = separator;
     }
 
-    private readonly StringBuilder stringBuilder;
-
     public char Separator { get; set; }
+
     public bool UseSeparator { get; set; }
 
     public int Length => stringBuilder.Length;
 
-    public void Append(int value)
-    {
-        Append(value.ToString(CultureInfo.InvariantCulture));
-    }
+    public void Append(int value) => Append(value.ToString(CultureInfo.InvariantCulture));
 
-    public void Append(object value)
-    {
-        Append(value.ToString());
-    }
+    public void Append(object value) => Append(value.ToString());
 
     public void Append(string value)
     {
@@ -59,10 +54,7 @@ public class ExtendedStringBuilder : ISerializable
             stringBuilder.Append(Separator);
     }
 
-    public void Remove(int startIndex, int length)
-    {
-        stringBuilder.Remove(startIndex, length);
-    }
+    public void Remove(int startIndex, int length) => stringBuilder.Remove(startIndex, length);
 
     public override string ToString()
     {
@@ -72,8 +64,5 @@ public class ExtendedStringBuilder : ISerializable
         return stringBuilder.ToString();
     }
 
-    public void GetObjectData(SerializationInfo info, StreamingContext context)
-    {
-        ((ISerializable)stringBuilder).GetObjectData(info, context);
-    }
+    public void GetObjectData(SerializationInfo info, StreamingContext context) => ((ISerializable)stringBuilder).GetObjectData(info, context);
 }

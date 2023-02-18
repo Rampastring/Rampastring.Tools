@@ -1,6 +1,6 @@
-﻿using System;
+﻿namespace Rampastring.Tools;
 
-namespace Rampastring.Tools;
+using System;
 
 /// <summary>
 /// Defines how boolean values are converted to strings when a <see cref="IniFile"/> is written.

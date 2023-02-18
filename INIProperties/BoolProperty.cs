@@ -5,14 +5,15 @@
 /// </summary>
 public class BoolProperty : GenericINIProperty<bool>, IIniProperty
 {
-    public BoolProperty() : this(false) { }
-
-    public BoolProperty(bool defaultValue) : base(defaultValue)
+    public BoolProperty()
+        : this(false)
     {
     }
 
-    public override void ParseValue(IniFile iniFile, string sectionName, string keyName)
+    public BoolProperty(bool defaultValue)
+        : base(defaultValue)
     {
-        Value = iniFile.GetBooleanValue(sectionName, keyName, DefaultValue);
     }
+
+    public override void ParseValue(IniFile iniFile, string sectionName, string keyName) => Value = iniFile.GetBooleanValue(sectionName, keyName, DefaultValue);
 }

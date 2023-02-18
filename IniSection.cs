@@ -1,20 +1,23 @@
 ﻿// Rampastring's INI parser
 // http://www.moddb.com/members/rampastring
 
+namespace Rampastring.Tools;
+
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
-
-namespace Rampastring.Tools;
 
 /// <summary>
 /// Represents a [section] in an INI file.
 /// </summary>
 public class IniSection : IIniSection
 {
+    public List<KeyValuePair<string, string>> Keys = new();
 
-    public IniSection() { }
+    public IniSection()
+    {
+    }
 
     public IniSection(string sectionName)
     {
@@ -22,7 +25,6 @@ public class IniSection : IIniSection
     }
 
     public string SectionName { get; set; }
-    public List<KeyValuePair<string, string>> Keys = new();
 
     /// <summary>
     /// Adds a key to the INI section.
@@ -94,10 +96,7 @@ public class IniSection : IIniSection
     /// or converting the key's value to an integer failed.</param>
     /// <returns>The given key's value if the section and key was found and
     /// the value is a valid integer. Otherwise the given defaultValue.</returns>
-    public int GetIntValue(string key, int defaultValue)
-    {
-        return Conversions.IntFromString(GetStringValue(key, string.Empty), defaultValue);
-    }
+    public int GetIntValue(string key, int defaultValue) => Conversions.IntFromString(GetStringValue(key, string.Empty), defaultValue);
 
     /// <summary>
     /// Returns a double-precision floating point value from the INI section.
@@ -107,10 +106,7 @@ public class IniSection : IIniSection
     /// or converting the key's value to a double failed.</param>
     /// <returns>The given key's value if the section and key was found and
     /// the value is a valid double. Otherwise the given defaultValue.</returns>
-    public double GetDoubleValue(string key, double defaultValue)
-    {
-        return Conversions.DoubleFromString(GetStringValue(key, string.Empty), defaultValue);
-    }
+    public double GetDoubleValue(string key, double defaultValue) => Conversions.DoubleFromString(GetStringValue(key, string.Empty), defaultValue);
 
     /// <summary>
     /// Returns a single-precision floating point value from the INI section.
@@ -120,10 +116,7 @@ public class IniSection : IIniSection
     /// or converting the key's value to a float failed.</param>
     /// <returns>The given key's value if the section and key was found and
     /// the value is a valid float. Otherwise the given defaultValue.</returns>
-    public float GetSingleValue(string key, float defaultValue)
-    {
-        return Conversions.FloatFromString(GetStringValue(key, String.Empty), defaultValue);
-    }
+    public float GetSingleValue(string key, float defaultValue) => Conversions.FloatFromString(GetStringValue(key, string.Empty), defaultValue);
 
     /// <summary>
     /// Sets the string value of a key in the INI section.
@@ -131,10 +124,7 @@ public class IniSection : IIniSection
     /// </summary>
     /// <param name="key">The name of the INI key.</param>
     /// <param name="value">The value of the INI key.</param>
-    public void SetStringValue(string key, string value)
-    {
-        AddOrReplaceKey(key, value);
-    }
+    public void SetStringValue(string key, string value) => AddOrReplaceKey(key, value);
 
     /// <summary>
     /// Sets the integer value of a key in the INI section.
@@ -142,10 +132,7 @@ public class IniSection : IIniSection
     /// </summary>
     /// <param name="key">The name of the INI key.</param>
     /// <param name="value">The value of the INI key.</param>
-    public void SetIntValue(string key, int value)
-    {
-        AddOrReplaceKey(key, value.ToString(CultureInfo.InvariantCulture));
-    }
+    public void SetIntValue(string key, int value) => AddOrReplaceKey(key, value.ToString(CultureInfo.InvariantCulture));
 
     /// <summary>
     /// Sets the double-precision floating point value of a key in the INI section.
@@ -153,10 +140,7 @@ public class IniSection : IIniSection
     /// </summary>
     /// <param name="key">The name of the INI key.</param>
     /// <param name="value">The value of the INI key.</param>
-    public void SetDoubleValue(string key, double value)
-    {
-        AddOrReplaceKey(key, value.ToString(CultureInfo.InvariantCulture));
-    }
+    public void SetDoubleValue(string key, double value) => AddOrReplaceKey(key, value.ToString(CultureInfo.InvariantCulture));
 
     /// <summary>
     /// Sets the single-precision floating point value of a key in the INI section.
@@ -164,10 +148,7 @@ public class IniSection : IIniSection
     /// </summary>
     /// <param name="key">The name of the INI key.</param>
     /// <param name="value">The value of the INI key.</param>
-    public void SetFloatValue(string key, float value)
-    {
-        AddOrReplaceKey(key, value.ToString(CultureInfo.InvariantCulture));
-    }
+    public void SetFloatValue(string key, float value) => AddOrReplaceKey(key, value.ToString(CultureInfo.InvariantCulture));
 
     /// <summary>
     /// Sets the boolean value of a key in the INI section.
@@ -176,10 +157,7 @@ public class IniSection : IIniSection
     /// </summary>
     /// <param name="key">The name of the INI key.</param>
     /// <param name="value">The value of the INI key.</param>
-    public void SetBooleanValue(string key, bool value)
-    {
-        SetBooleanValue(key, value, BooleanStringStyle.TRUEFALSE);
-    }
+    public void SetBooleanValue(string key, bool value) => SetBooleanValue(key, value, BooleanStringStyle.TRUEFALSE);
 
     /// <summary>
     /// Sets the boolean value of a key in the INI section.
@@ -202,10 +180,7 @@ public class IniSection : IIniSection
     /// or converting the key's value to a boolean failed.</param>
     /// <returns>The given key's value if the section and key was found and
     /// the value is a valid boolean. Otherwise the given defaultValue.</returns>
-    public bool GetBooleanValue(string key, bool defaultValue)
-    {
-        return Conversions.BooleanFromString(GetStringValue(key, String.Empty), defaultValue);
-    }
+    public bool GetBooleanValue(string key, bool defaultValue) => Conversions.BooleanFromString(GetStringValue(key, string.Empty), defaultValue);
 
     /// <summary>
     /// Sets the list value of a key in the INI section.
@@ -216,10 +191,7 @@ public class IniSection : IIniSection
     /// <param name="key">The INI key.</param>
     /// <param name="list">The list.</param>
     /// <param name="separator">The separator between list elements.</param>
-    public void SetListValue<T>(string key, List<T> list, char separator)
-    {
-        AddOrReplaceKey(key, string.Join(separator.ToString(), list));
-    }
+    public void SetListValue<T>(string key, List<T> list, char separator) => AddOrReplaceKey(key, string.Join(separator.ToString(), list));
 
     /// <summary>
     /// Parses and returns a list value of a key in the INI section.
@@ -246,18 +218,12 @@ public class IniSection : IIniSection
     /// The path string has all of its directory separators ( / \ )
     /// replaced with an environment-specific one.
     /// </summary>
-    public string GetPathStringValue(string key, string defaultValue)
-    {
-        return GetStringValue(key, defaultValue).Replace('/', Path.DirectorySeparatorChar).Replace('\\', Path.DirectorySeparatorChar);
-    }
+    public string GetPathStringValue(string key, string defaultValue) => GetStringValue(key, defaultValue).Replace('/', Path.DirectorySeparatorChar).Replace('\\', Path.DirectorySeparatorChar);
 
     /// <summary>
     /// Checks if the specified INI key exists in this section.
     /// </summary>
     /// <param name="key">The INI key.</param>
     /// <returns>True if the key exists in this section, otherwise false.</returns>
-    public bool KeyExists(string key)
-    {
-        return Keys.FindIndex(k => k.Key == key) > -1;
-    }
+    public bool KeyExists(string key) => Keys.FindIndex(k => k.Key == key) > -1;
 }

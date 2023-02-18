@@ -1,9 +1,9 @@
-﻿using System.Globalization;
+﻿namespace Rampastring.Tools;
+
+using System.Globalization;
 using System.IO;
 using System.Security.Cryptography;
 using System.Text;
-
-namespace Rampastring.Tools;
 
 /// <summary>
 /// A static class that contains various useful functions.

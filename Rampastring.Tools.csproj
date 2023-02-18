@@ -5,7 +5,7 @@
     <Description>Rampastring's Generally Useful Library</Description>
     <Company>Rampastring</Company>
     <Product>Rampastring.Tools</Product>
-    <Copyright>Copyright © Rami 'Rampastring' Pasanen 2016-2022</Copyright>
+    <Copyright>Copyright © Rami 'Rampastring' Pasanen 2016-2023</Copyright>
     <Trademark></Trademark>
     <AssemblyName>Rampastring.Tools</AssemblyName>
     <RootNamespace>Rampastring.Tools</RootNamespace>
@@ -22,6 +22,7 @@
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
     <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageId>Rampastring.Tools</PackageId>
     <PackageTags></PackageTags>
     <PackageProjectUrl>https://github.com/Rampastring/Rampastring.Tools</PackageProjectUrl>
@@ -32,9 +33,14 @@
   </PropertyGroup>
   <ItemGroup>
     <None Include="README.md" Pack="true" PackagePath="\" />
+    <None Include="LICENSE.md" Pack="true" PackagePath="\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.Windows.CsWin32" Version="0.2.188-beta" PrivateAssets="All" />
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1" PrivateAssets="All" />
+    <PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.435">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
   </ItemGroup>
 </Project>

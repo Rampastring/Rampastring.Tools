@@ -1,10 +1,11 @@
-﻿using System;
+﻿namespace Rampastring.Tools;
 
-namespace Rampastring.Tools;
+using System;
 
 public class IniParseException : Exception
 {
-    public IniParseException(string message) : base(message)
+    public IniParseException(string message)
+        : base(message)
     {
     }
 }

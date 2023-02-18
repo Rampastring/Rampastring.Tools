@@ -1,29 +1,29 @@
-﻿using System;
-using System.Globalization;
-using System.Text;
-using System.IO;
+﻿namespace Rampastring.Tools;
 
-namespace Rampastring.Tools;
+using System;
+using System.Globalization;
+using System.IO;
+using System.Text;
 
 /// <summary>
 /// A fairly self-explanatory class for logging.
 /// </summary>
 public static class Logger
 {
+    private static readonly object locker = new();
+
+    private static string logPath;
+
+    private static string logFileName;
+
     public static bool WriteToConsole { get; set; }
 
     public static bool WriteLogFile { get; set; }
 
-    private static string LogPath;
-
-    private static string LogFileName;
-
-    private static readonly object locker = new();
-
     public static void Initialize(string logFilePath, string logFileName)
     {
-        LogPath = logFilePath;
-        LogFileName = logFileName;
+        logPath = logFilePath;
+        Logger.logFileName = logFileName;
     }
 
     public static void Log(string data)
@@ -37,7 +37,7 @@ public static class Logger
             {
                 try
                 {
-                    using var sw = new StreamWriter(SafePath.CombineFilePath(LogPath, LogFileName), true);
+                    using var sw = new StreamWriter(SafePath.CombineFilePath(logPath, logFileName), true);
 
                     DateTime now = DateTime.Now;
 
@@ -66,7 +66,7 @@ public static class Logger
             {
                 try
                 {
-                    using var sw = new StreamWriter(SafePath.CombineFilePath(LogPath, fileName), true);
+                    using var sw = new StreamWriter(SafePath.CombineFilePath(logPath, fileName), true);
 
                     DateTime now = DateTime.Now;
 
@@ -95,7 +95,7 @@ public static class Logger
             {
                 try
                 {
-                    using var sw = new StreamWriter(SafePath.CombineFilePath(LogPath, LogFileName), true);
+                    using var sw = new StreamWriter(SafePath.CombineFilePath(logPath, logFileName), true);
 
                     DateTime now = DateTime.Now;
 
@@ -124,7 +124,7 @@ public static class Logger
             {
                 try
                 {
-                    using var sw = new StreamWriter(SafePath.CombineFilePath(LogPath, LogFileName), true);
+                    using var sw = new StreamWriter(SafePath.CombineFilePath(logPath, logFileName), true);
 
                     DateTime now = DateTime.Now;
 
@@ -150,7 +150,7 @@ public static class Logger
 
             try
             {
-                using var sw = new StreamWriter(SafePath.CombineFilePath(LogPath, LogFileName), true);
+                using var sw = new StreamWriter(SafePath.CombineFilePath(logPath, logFileName), true);
 
                 DateTime now = DateTime.Now;
 
@@ -175,7 +175,7 @@ public static class Logger
 
             try
             {
-                using var sw = new StreamWriter(SafePath.CombineFilePath(LogPath, fileName), true);
+                using var sw = new StreamWriter(SafePath.CombineFilePath(logPath, fileName), true);
 
                 DateTime now = DateTime.Now;
 

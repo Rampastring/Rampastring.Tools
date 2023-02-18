@@ -1,7 +1,7 @@
-﻿using System;
-using System.Globalization;
+﻿namespace Rampastring.Tools;
 
-namespace Rampastring.Tools;
+using System;
+using System.Globalization;
 
 /// <summary>
 /// Provides static methods for converting data types.
@@ -158,7 +158,6 @@ public static class Conversions
     {
         // Slight modification of Marc Gravell's code at
         // http://stackoverflow.com/questions/713057/convert-bool-to-byte
-
         int byteCount = boolArray.Length / 8;
         if ((boolArray.Length % 8) != 0)
             byteCount++;
@@ -191,9 +190,8 @@ public static class Conversions
         int booleanCount = byteArray.Length * 8;
         bool[] boolArray = new bool[booleanCount];
 
-        // Worth reading: 
+        // Worth reading:
         // http://stackoverflow.com/questions/141525/what-are-bitwise-shift-bit-shift-operators-and-how-do-they-work
-
         for (int i = 0; i < byteArray.Length; i++)
         {
             byte b = byteArray[i];
@@ -221,9 +219,6 @@ public static class Conversions
         // check each bit in the byte. if 1 set to true, if 0 set to false
         for (int i = 0; i < 8; i++)
             result[i] = (b & (1 << i)) != 0;
-
-        // reverse the array
-        // Array.Reverse(result);
 
         return result;
     }
