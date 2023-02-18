@@ -40,7 +40,7 @@ public static class SafePath
     /// <returns>A <see cref="DirectoryInfo"/> instance representing the combined directory path of all <paramref name="paths"/>.</returns>
     public static DirectoryInfo GetDirectory(params string[] paths)
     {
-        return new DirectoryInfo(CombineDirectoryPath(paths));
+        return new(CombineDirectoryPath(paths));
     }
 
     /// <summary>
@@ -51,7 +51,7 @@ public static class SafePath
     /// <returns>A <see cref="FileInfo"/> instance representing the combined directory path and file name of all <paramref name="paths"/>.</returns>
     public static FileInfo GetFile(params string[] paths)
     {
-        return new FileInfo(CombineFilePath(paths));
+        return new(CombineFilePath(paths));
     }
 
     /// <summary>
@@ -112,13 +112,14 @@ public static class SafePath
             .TrimEnd(Path.DirectorySeparatorChar)
             .TrimEnd(Path.AltDirectorySeparatorChar);
 
+#pragma warning disable IDE0046 // Convert to conditional expression
         if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
         {
-            if (paths[0].Length > 1 && paths[0][1] == Path.VolumeSeparatorChar)
-                return FormattableString.Invariant($"{combinedPath}{(isDirectoryPath ? Path.DirectorySeparatorChar : null)}");
-
-            return FormattableString.Invariant($"{(Path.IsPathRooted(paths[0]) ? Path.DirectorySeparatorChar : null)}{combinedPath}{(isDirectoryPath ? Path.DirectorySeparatorChar : null)}");
+            return paths[0].Length > 1 && paths[0][1] == Path.VolumeSeparatorChar
+                ? FormattableString.Invariant($"{combinedPath}{(isDirectoryPath ? Path.DirectorySeparatorChar : null)}")
+                : FormattableString.Invariant($"{(Path.IsPathRooted(paths[0]) ? Path.DirectorySeparatorChar : null)}{combinedPath}{(isDirectoryPath ? Path.DirectorySeparatorChar : null)}");
         }
+#pragma warning restore IDE0046 // Convert to conditional expression
 
         return FormattableString.Invariant($"{(Path.IsPathRooted(paths[0]) ? Path.DirectorySeparatorChar : null)}{combinedPath}{(isDirectoryPath ? Path.DirectorySeparatorChar : null)}");
     }

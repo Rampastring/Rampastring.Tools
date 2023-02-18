@@ -2,12 +2,12 @@
 
 public abstract class GenericINIProperty<T> : IIniProperty
 {
-    public GenericINIProperty(T defaultValue)
+    protected GenericINIProperty(T defaultValue)
     {
         DefaultValue = defaultValue;
     }
 
-    public T DefaultValue { get; private set; }
+    public T DefaultValue { get; }
 
     public T Value { get; protected set; }
 

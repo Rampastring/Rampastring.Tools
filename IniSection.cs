@@ -22,7 +22,7 @@ public class IniSection : IIniSection
     }
 
     public string SectionName { get; set; }
-    public List<KeyValuePair<string, string>> Keys = new List<KeyValuePair<string, string>>();
+    public List<KeyValuePair<string, string>> Keys = new();
 
     /// <summary>
     /// Adds a key to the INI section.
@@ -40,7 +40,7 @@ public class IniSection : IIniSection
         if (Keys.FindIndex(kvp => kvp.Key == keyName) > -1)
             throw new InvalidOperationException("The given key already exists in the section!");
 
-        Keys.Add(new KeyValuePair<string, string>(keyName, value));
+        Keys.Add(new(keyName, value));
     }
 
     /// <summary>
@@ -56,9 +56,9 @@ public class IniSection : IIniSection
 
         int index = Keys.FindIndex(k => k.Key == keyName);
         if (index > -1)
-            Keys[index] = new KeyValuePair<string, string>(keyName, value);
+            Keys[index] = new(keyName, value);
         else
-            Keys.Add(new KeyValuePair<string, string>(keyName, value));
+            Keys.Add(new(keyName, value));
     }
 
     /// <summary>
@@ -81,12 +81,9 @@ public class IniSection : IIniSection
     /// <returns>The given key's value if the section and key was found. Otherwise the given defaultValue.</returns>
     public string GetStringValue(string key, string defaultValue)
     {
-        var kvp = Keys.Find(k => k.Key == key);
+        KeyValuePair<string, string> kvp = Keys.Find(k => k.Key == key);
 
-        if (kvp.Value == null)
-            return defaultValue;
-
-        return kvp.Value;
+        return kvp.Value ?? defaultValue;
     }
 
     /// <summary>
@@ -147,7 +144,7 @@ public class IniSection : IIniSection
     /// <param name="value">The value of the INI key.</param>
     public void SetIntValue(string key, int value)
     {
-        AddOrReplaceKey(key, value.ToString());
+        AddOrReplaceKey(key, value.ToString(CultureInfo.InvariantCulture));
     }
 
     /// <summary>
@@ -234,13 +231,13 @@ public class IniSection : IIniSection
     /// <returns>A list that contains the parsed elements.</returns>
     public List<T> GetListValue<T>(string key, char separator, Func<string, T> converter)
     {
-        List<T> list = new List<T>();
+        var list = new List<T>();
         string value = GetStringValue(key, string.Empty);
         string[] parts = value.Split(new char[] { separator }, StringSplitOptions.RemoveEmptyEntries);
+
         foreach (string part in parts)
-        {
             list.Add(converter(part));
-        }
+
         return list;
     }
 

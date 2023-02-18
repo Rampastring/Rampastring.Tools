@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.Text;
 using System.IO;
 
@@ -17,7 +18,7 @@ public static class Logger
 
     private static string LogFileName;
 
-    private static readonly object locker = new object();
+    private static readonly object locker = new();
 
     public static void Initialize(string logFilePath, string logFileName)
     {
@@ -36,12 +37,12 @@ public static class Logger
             {
                 try
                 {
-                    using StreamWriter sw = new StreamWriter(SafePath.CombineFilePath(LogPath, LogFileName), true);
+                    using var sw = new StreamWriter(SafePath.CombineFilePath(LogPath, LogFileName), true);
 
                     DateTime now = DateTime.Now;
 
-                    StringBuilder sb = new StringBuilder();
-                    sb.Append(now.ToString("dd.MM. HH:mm:ss.fff"));
+                    var sb = new StringBuilder();
+                    sb.Append(now.ToString("dd.MM. HH:mm:ss.fff", CultureInfo.InvariantCulture));
                     sb.Append("    ");
                     sb.Append(data);
 
@@ -65,12 +66,12 @@ public static class Logger
             {
                 try
                 {
-                    using StreamWriter sw = new StreamWriter(SafePath.CombineFilePath(LogPath, fileName), true);
+                    using var sw = new StreamWriter(SafePath.CombineFilePath(LogPath, fileName), true);
 
                     DateTime now = DateTime.Now;
 
-                    StringBuilder sb = new StringBuilder();
-                    sb.Append(now.ToString("dd.MM. HH:mm:ss.fff"));
+                    var sb = new StringBuilder();
+                    sb.Append(now.ToString("dd.MM. HH:mm:ss.fff", CultureInfo.InvariantCulture));
                     sb.Append("    ");
                     sb.Append(data);
 
@@ -94,14 +95,14 @@ public static class Logger
             {
                 try
                 {
-                    using StreamWriter sw = new StreamWriter(SafePath.CombineFilePath(LogPath, LogFileName), true);
+                    using var sw = new StreamWriter(SafePath.CombineFilePath(LogPath, LogFileName), true);
 
                     DateTime now = DateTime.Now;
 
-                    StringBuilder sb = new StringBuilder();
-                    sb.Append(now.ToString("dd.MM. HH:mm:ss.fff"));
+                    var sb = new StringBuilder();
+                    sb.Append(now.ToString("dd.MM. HH:mm:ss.fff", CultureInfo.InvariantCulture));
                     sb.Append("    ");
-                    sb.Append(string.Format(data, f1));
+                    sb.Append(string.Format(CultureInfo.InvariantCulture, data, f1));
 
                     sw.WriteLine(sb.ToString());
                 }
@@ -123,14 +124,14 @@ public static class Logger
             {
                 try
                 {
-                    using StreamWriter sw = new StreamWriter(SafePath.CombineFilePath(LogPath, LogFileName), true);
+                    using var sw = new StreamWriter(SafePath.CombineFilePath(LogPath, LogFileName), true);
 
                     DateTime now = DateTime.Now;
 
-                    StringBuilder sb = new StringBuilder();
-                    sb.Append(now.ToString("dd.MM. HH:mm:ss.fff"));
+                    var sb = new StringBuilder();
+                    sb.Append(now.ToString("dd.MM. HH:mm:ss.fff", CultureInfo.InvariantCulture));
                     sb.Append("    ");
-                    sb.Append(string.Format(data, f1, f2));
+                    sb.Append(string.Format(CultureInfo.InvariantCulture, data, f1, f2));
 
                     sw.WriteLine(sb.ToString());
                 }
@@ -149,12 +150,12 @@ public static class Logger
 
             try
             {
-                using StreamWriter sw = new StreamWriter(SafePath.CombineFilePath(LogPath, LogFileName), true);
+                using var sw = new StreamWriter(SafePath.CombineFilePath(LogPath, LogFileName), true);
 
                 DateTime now = DateTime.Now;
 
-                StringBuilder sb = new StringBuilder();
-                sb.Append(now.ToString("dd.MM. HH:mm:ss.fff"));
+                var sb = new StringBuilder();
+                sb.Append(now.ToString("dd.MM. HH:mm:ss.fff", CultureInfo.InvariantCulture));
                 sb.Append("    ");
                 sb.Append(data);
 
@@ -174,12 +175,12 @@ public static class Logger
 
             try
             {
-                using StreamWriter sw = new StreamWriter(SafePath.CombineFilePath(LogPath, fileName), true);
+                using var sw = new StreamWriter(SafePath.CombineFilePath(LogPath, fileName), true);
 
                 DateTime now = DateTime.Now;
 
-                StringBuilder sb = new StringBuilder();
-                sb.Append(now.ToString("dd.MM. HH:mm:ss.fff"));
+                var sb = new StringBuilder();
+                sb.Append(now.ToString("dd.MM. HH:mm:ss.fff", CultureInfo.InvariantCulture));
                 sb.Append("    ");
                 sb.Append(data);
 

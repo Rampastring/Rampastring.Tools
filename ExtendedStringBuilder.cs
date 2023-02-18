@@ -1,4 +1,5 @@
-﻿using System.Runtime.Serialization;
+﻿using System.Globalization;
+using System.Runtime.Serialization;
 using System.Text;
 
 namespace Rampastring.Tools;
@@ -11,25 +12,25 @@ public class ExtendedStringBuilder : ISerializable
 {
     public ExtendedStringBuilder()
     {
-        stringBuilder = new StringBuilder();
+        stringBuilder = new();
     }
 
     public ExtendedStringBuilder(string value, bool useSeparator)
     {
-        stringBuilder = new StringBuilder(value);
+        stringBuilder = new(value);
         UseSeparator = useSeparator;
     }
 
     public ExtendedStringBuilder(string value, bool useSeparator, char separator)
     {
-        stringBuilder = new StringBuilder(value);
+        stringBuilder = new(value);
         UseSeparator = useSeparator;
         Separator = separator;
     }
 
     public ExtendedStringBuilder(bool useSeparator, char separator)
     {
-        stringBuilder = new StringBuilder();
+        stringBuilder = new();
         UseSeparator = useSeparator;
         Separator = separator;
     }
@@ -39,11 +40,11 @@ public class ExtendedStringBuilder : ISerializable
     public char Separator { get; set; }
     public bool UseSeparator { get; set; }
 
-    public int Length { get { return stringBuilder.Length; } }
+    public int Length => stringBuilder.Length;
 
     public void Append(int value)
     {
-        Append(value.ToString());
+        Append(value.ToString(CultureInfo.InvariantCulture));
     }
 
     public void Append(object value)

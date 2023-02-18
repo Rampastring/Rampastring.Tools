@@ -35,6 +35,6 @@ public static class WindowFlasher
 
         BOOL result = PInvoke.FlashWindowEx(pfwi);
 
-        return result.Value != 0;
+        return result;
     }
 }

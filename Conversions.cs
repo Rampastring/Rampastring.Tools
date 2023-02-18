@@ -19,23 +19,20 @@ public static class Conversions
         if (string.IsNullOrEmpty(str))
             return defaultValue;
 
-        char firstChar = str.ToLower(CultureInfo.InvariantCulture)[0];
+        char firstChar = str.ToUpperInvariant()[0];
 
-        switch (firstChar)
+        return firstChar switch
         {
-            case 't':
-            case 'y':
-            case '1':
-            case 'a':
-            case 'e':
-                return true;
-            case 'n':
-            case 'f':
-            case '0':
-                return false;
-            default:
-                return defaultValue;
-        }
+            'T' => true,
+            'Y' => true,
+            '1' => true,
+            'A' => true,
+            'E' => true,
+            'N' => false,
+            'F' => false,
+            '0' => false,
+            _ => defaultValue
+        };
     }
 
     /// <summary>
@@ -174,7 +171,7 @@ public static class Conversions
         {
             if (boolArray[i])
             {
-                bytes[byteIndex] |= (byte)(((byte)1) << optionIndex);
+                bytes[byteIndex] |= (byte)(1 << optionIndex);
             }
 
             optionIndex++;
@@ -204,7 +201,7 @@ public static class Conversions
 
             for (int j = 0; j < booleans.Length; j++)
             {
-                boolArray[i * 8 + j] = booleans[j];
+                boolArray[(i * 8) + j] = booleans[j];
             }
         }
 
@@ -223,7 +220,7 @@ public static class Conversions
 
         // check each bit in the byte. if 1 set to true, if 0 set to false
         for (int i = 0; i < 8; i++)
-            result[i] = (b & (1 << i)) == 0 ? false : true;
+            result[i] = (b & (1 << i)) != 0;
 
         // reverse the array
         // Array.Reverse(result);

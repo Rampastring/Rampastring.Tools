@@ -106,8 +106,8 @@ public class IniFile : IIniFile
     /// </summary>
     public string Comment { get; set; }
 
-    protected List<IniSection> Sections = new List<IniSection>();
-    private int _lastSectionIndex = 0;
+    protected List<IniSection> Sections = new();
+    private int _lastSectionIndex;
 
     public void Parse()
     {
@@ -134,8 +134,7 @@ public class IniFile : IIniFile
 
     private void ParseIniFile(Stream stream, Encoding encoding = null)
     {
-        if (encoding == null)
-            encoding = Encoding;
+        encoding ??= Encoding;
 
         using var reader = new StreamReader(stream, encoding);
 
@@ -168,11 +167,13 @@ public class IniFile : IIniFile
                 }
                 else if (AllowNewSections)
                 {
-                    Sections.Add(new IniSection(sectionName));
+                    Sections.Add(new(sectionName));
                     currentSectionId = Sections.Count - 1;
                 }
                 else
+                {
                     currentSectionId = -1;
+                }
 
                 continue;
             }
@@ -203,9 +204,9 @@ public class IniFile : IIniFile
         ApplyBaseIni();
     }
 
-    private string ReadTextBlock(StreamReader reader)
+    private static string ReadTextBlock(StreamReader reader)
     {
-        StringBuilder stringBuilder = new StringBuilder();
+        var stringBuilder = new StringBuilder();
 
         while (true)
         {
@@ -239,7 +240,7 @@ public class IniFile : IIniFile
         {
             // Consolidate with the INI file that this INI file is based on
             string path = SafePath.CombineFilePath(SafePath.GetFileDirectoryName(FileName), basedOn);
-            IniFile baseIni = new IniFile(path);
+            var baseIni = new IniFile(path);
             ConsolidateIniFiles(baseIni, this);
             Sections = baseIni.Sections;
         }
@@ -270,7 +271,7 @@ public class IniFile : IIniFile
     /// <param name="encoding">The encoding of the INI file. Default for UTF-8.</param>
     public void WriteIniStream(Stream stream, Encoding encoding)
     {
-        using StreamWriter sw = new StreamWriter(stream, encoding);
+        using var sw = new StreamWriter(stream, encoding);
 
         if (!string.IsNullOrWhiteSpace(Comment))
         {
@@ -281,10 +282,10 @@ public class IniFile : IIniFile
         foreach (IniSection section in Sections)
         {
             sw.Write("[" + section.SectionName + "]\r\n");
-            foreach (var kvp in section.Keys)
-            {
+
+            foreach (KeyValuePair<string, string> kvp in section.Keys)
                 sw.Write(kvp.Key + "=" + kvp.Value + "\r\n");
-            }
+
             sw.Write("\r\n");
         }
 
@@ -302,7 +303,7 @@ public class IniFile : IIniFile
         if (fileInfo.Exists)
             fileInfo.Delete();
 
-        using var stream = fileInfo.OpenWrite();
+        using FileStream stream = fileInfo.OpenWrite();
 
         WriteIniStream(stream);
     }
@@ -313,7 +314,7 @@ public class IniFile : IIniFile
     /// <param name="sectionName">The name of the section to add.</param>
     public void AddSection(string sectionName)
     {
-        Sections.Add(new IniSection(sectionName));
+        Sections.Add(new(sectionName));
     }
 
     /// <summary>
@@ -334,7 +335,7 @@ public class IniFile : IIniFile
     {
         int index = Sections.FindIndex(section =>
                 section.SectionName.Equals(sectionName,
-                StringComparison.InvariantCultureIgnoreCase));
+                StringComparison.OrdinalIgnoreCase));
 
         if (index > -1)
             Sections.RemoveAt(index);
@@ -396,10 +397,10 @@ public class IniFile : IIniFile
 
         var newSection = new IniSection(secondSection.SectionName);
 
-        foreach (var kvp in firstSection.Keys)
+        foreach (KeyValuePair<string, string> kvp in firstSection.Keys)
             newSection.Keys.Add(kvp);
 
-        foreach (var kvp in secondSection.Keys)
+        foreach (KeyValuePair<string, string> kvp in secondSection.Keys)
         {
             int index = newSection.Keys.FindIndex(k => k.Key == kvp.Key);
 
@@ -422,10 +423,7 @@ public class IniFile : IIniFile
     public string GetStringValue(string section, string key, string defaultValue)
     {
         IniSection iniSection = GetSection(section);
-        if (iniSection == null)
-            return defaultValue;
-
-        return iniSection.GetStringValue(key, defaultValue);
+        return iniSection == null ? defaultValue : iniSection.GetStringValue(key, defaultValue);
     }
 
     public string GetStringValue(string section, string key, string defaultValue, out bool success)
@@ -437,7 +435,7 @@ public class IniFile : IIniFile
             return defaultValue;
         }
 
-        var kvp = Sections[sectionId].Keys.Find(k => k.Key == key);
+        KeyValuePair<string, string> kvp = Sections[sectionId].Keys.Find(k => k.Key == key);
 
         if (kvp.Value == null)
         {
@@ -515,10 +513,7 @@ public class IniFile : IIniFile
     public string GetPathStringValue(string section, string key, string defaultValue)
     {
         IniSection iniSection = GetSection(section);
-        if (iniSection == null)
-            return defaultValue;
-
-        return iniSection.GetPathStringValue(key, defaultValue);
+        return iniSection == null ? defaultValue : iniSection.GetPathStringValue(key, defaultValue);
     }
 
     /// <summary>
@@ -557,10 +552,10 @@ public class IniFile : IIniFile
     /// <param name="value">The value to set to the key.</param>
     public void SetStringValue(string section, string key, string value)
     {
-        var iniSection = Sections.Find(s => s.SectionName == section);
+        IniSection iniSection = Sections.Find(s => s.SectionName == section);
         if (iniSection == null)
         {
-            iniSection = new IniSection(section);
+            iniSection = new(section);
             Sections.Add(iniSection);
         }
 
@@ -575,10 +570,10 @@ public class IniFile : IIniFile
     /// <param name="value">The value to set to the key.</param>
     public void SetIntValue(string section, string key, int value)
     {
-        var iniSection = Sections.Find(s => s.SectionName == section);
+        IniSection iniSection = Sections.Find(s => s.SectionName == section);
         if (iniSection == null)
         {
-            iniSection = new IniSection(section);
+            iniSection = new(section);
             Sections.Add(iniSection);
         }
 
@@ -593,10 +588,10 @@ public class IniFile : IIniFile
     /// <param name="value">The value to set to the key.</param>
     public void SetDoubleValue(string section, string key, double value)
     {
-        var iniSection = Sections.Find(s => s.SectionName == section);
+        IniSection iniSection = Sections.Find(s => s.SectionName == section);
         if (iniSection == null)
         {
-            iniSection = new IniSection(section);
+            iniSection = new(section);
             Sections.Add(iniSection);
         }
 
@@ -623,10 +618,10 @@ public class IniFile : IIniFile
     public void SetSingleValue(string section, string key, float value, int decimals)
     {
         string stringValue = value.ToString("N" + decimals, CultureInfo.GetCultureInfo("en-US").NumberFormat);
-        var iniSection = Sections.Find(s => s.SectionName == section);
+        IniSection iniSection = Sections.Find(s => s.SectionName == section);
         if (iniSection == null)
         {
-            iniSection = new IniSection(section);
+            iniSection = new(section);
             Sections.Add(iniSection);
         }
 
@@ -641,10 +636,10 @@ public class IniFile : IIniFile
     /// <param name="value">The value to set to the key.</param>
     public void SetBooleanValue(string section, string key, bool value)
     {
-        var iniSection = Sections.Find(s => s.SectionName == section);
+        IniSection iniSection = Sections.Find(s => s.SectionName == section);
         if (iniSection == null)
         {
-            iniSection = new IniSection(section);
+            iniSection = new(section);
             Sections.Add(iniSection);
         }
 
@@ -661,7 +656,7 @@ public class IniFile : IIniFile
         if (section == null)
             return null;
 
-        List<string> returnValue = new List<string>();
+        var returnValue = new List<string>();
 
         section.Keys.ForEach(kvp => returnValue.Add(kvp.Key));
 
@@ -673,7 +668,7 @@ public class IniFile : IIniFile
     /// </summary>
     public List<string> GetSections()
     {
-        List<string> sectionList = new List<string>();
+        var sectionList = new List<string>();
 
         Sections.ForEach(section => sectionList.Add(section.SectionName));
 
@@ -700,9 +695,6 @@ public class IniFile : IIniFile
     public bool KeyExists(string sectionName, string keyName)
     {
         IniSection section = GetSection(sectionName);
-        if (section == null)
-            return false;
-
-        return section.KeyExists(keyName);
+        return section != null && section.KeyExists(keyName);
     }
 }
