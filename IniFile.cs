@@ -616,20 +616,20 @@ public class IniFile : IIniFile
         {
             string currentLine = reader.ReadLine();
 
-            int commentStartIndex = currentLine.IndexOf(';');
+            int commentStartIndex = currentLine.SafeIndexOf(';');
             if (commentStartIndex > -1)
-                currentLine = currentLine.Substring(0, commentStartIndex);
+                currentLine = currentLine.SafeSubstring(0, commentStartIndex);
 
             if (string.IsNullOrWhiteSpace(currentLine))
                 continue;
 
             if (currentLine[0] == '[')
             {
-                int sectionNameEndIndex = currentLine.IndexOf(']');
+                int sectionNameEndIndex = currentLine.SafeIndexOf(']');
                 if (sectionNameEndIndex == -1)
                     throw new IniParseException("Invalid INI section definition: " + currentLine);
 
-                string sectionName = currentLine.Substring(1, sectionNameEndIndex - 1);
+                string sectionName = currentLine.SafeSubstring(1, sectionNameEndIndex - 1);
                 int index = Sections.FindIndex(c => c.SectionName == sectionName);
 
                 if (index > -1)
@@ -652,7 +652,7 @@ public class IniFile : IIniFile
             if (currentSectionId == -1)
                 continue;
 
-            int equalsIndex = currentLine.IndexOf('=');
+            int equalsIndex = currentLine.SafeIndexOf('=');
 
             if (equalsIndex == -1)
             {
@@ -660,7 +660,7 @@ public class IniFile : IIniFile
             }
             else
             {
-                string value = currentLine.Substring(equalsIndex + 1).Trim();
+                string value = currentLine.SafeSubstring(equalsIndex + 1).Trim();
 
                 if (value == TextBlockBeginIdentifier)
                 {
@@ -668,7 +668,7 @@ public class IniFile : IIniFile
                 }
 
                 Sections[currentSectionId].AddOrReplaceKey(
-                    currentLine.Substring(0, equalsIndex).Trim(),
+                    currentLine.SafeSubstring(0, equalsIndex).Trim(),
                     value);
             }
         }

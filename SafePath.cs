@@ -119,11 +119,11 @@ public static class SafePath
     private static string GetPath(string path)
     {
         return FormattableString.Invariant($"{path?
-            .Replace("///", "/")
-            .Replace("//", "/")
+            .SafeReplace("///", "/")
+            .SafeReplace("//", "/")
             .Replace('/', Path.DirectorySeparatorChar)
-            .Replace("\\\\\\", "\\")
-            .Replace("\\\\", "\\")
+            .SafeReplace("\\\\\\", "\\")
+            .SafeReplace("\\\\", "\\")
             .Replace('\\', Path.DirectorySeparatorChar)
             .TrimStart(Path.DirectorySeparatorChar)
             .TrimStart(Path.AltDirectorySeparatorChar)
