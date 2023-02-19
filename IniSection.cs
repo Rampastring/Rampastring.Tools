@@ -205,7 +205,7 @@ public class IniSection : IIniSection
     {
         var list = new List<T>();
         string value = GetStringValue(key, string.Empty);
-        string[] parts = value.Split(new char[] { separator }, StringSplitOptions.RemoveEmptyEntries);
+        string[] parts = value.Split(new[] { separator }, StringSplitOptions.RemoveEmptyEntries);
 
         foreach (string part in parts)
             list.Add(converter(part));

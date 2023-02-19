@@ -14,7 +14,7 @@ public static class Logger
 
     private static string logPath;
 
-    private static string logFileName;
+    private static string logName;
 
     public static bool WriteToConsole { get; set; }
 
@@ -23,7 +23,7 @@ public static class Logger
     public static void Initialize(string logFilePath, string logFileName)
     {
         logPath = logFilePath;
-        Logger.logFileName = logFileName;
+        logName = logFileName;
     }
 
     public static void Log(string data)
@@ -37,7 +37,7 @@ public static class Logger
             {
                 try
                 {
-                    using var sw = new StreamWriter(SafePath.CombineFilePath(logPath, logFileName), true);
+                    using var sw = new StreamWriter(SafePath.CombineFilePath(logPath, logName), true);
 
                     DateTime now = DateTime.Now;
 
@@ -95,7 +95,7 @@ public static class Logger
             {
                 try
                 {
-                    using var sw = new StreamWriter(SafePath.CombineFilePath(logPath, logFileName), true);
+                    using var sw = new StreamWriter(SafePath.CombineFilePath(logPath, logName), true);
 
                     DateTime now = DateTime.Now;
 
@@ -124,7 +124,7 @@ public static class Logger
             {
                 try
                 {
-                    using var sw = new StreamWriter(SafePath.CombineFilePath(logPath, logFileName), true);
+                    using var sw = new StreamWriter(SafePath.CombineFilePath(logPath, logName), true);
 
                     DateTime now = DateTime.Now;
 
@@ -150,7 +150,7 @@ public static class Logger
 
             try
             {
-                using var sw = new StreamWriter(SafePath.CombineFilePath(logPath, logFileName), true);
+                using var sw = new StreamWriter(SafePath.CombineFilePath(logPath, logName), true);
 
                 DateTime now = DateTime.Now;
 

@@ -33,8 +33,6 @@ public static class WindowFlasher
             dwTimeout = 0u
         };
 
-        BOOL result = PInvoke.FlashWindowEx(pfwi);
-
-        return result;
+        return PInvoke.FlashWindowEx(pfwi);
     }
 }
