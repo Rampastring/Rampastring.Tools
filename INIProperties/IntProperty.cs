@@ -15,5 +15,6 @@ public class IntProperty : GenericINIProperty<int>, IIniProperty
     {
     }
 
-    public override void ParseValue(IniFile iniFile, string sectionName, string keyName) => Value = iniFile.GetIntValue(sectionName, keyName, DefaultValue);
+    public override void ParseValue(IniFile iniFile, string sectionName, string keyName)
+        => Value = iniFile.GetIntValue(sectionName, keyName, DefaultValue);
 }

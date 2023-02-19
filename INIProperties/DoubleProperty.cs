@@ -15,5 +15,6 @@ public class DoubleProperty : GenericINIProperty<double>, IIniProperty
     {
     }
 
-    public override void ParseValue(IniFile iniFile, string sectionName, string keyName) => Value = iniFile.GetDoubleValue(sectionName, keyName, DefaultValue);
+    public override void ParseValue(IniFile iniFile, string sectionName, string keyName)
+        => Value = iniFile.GetDoubleValue(sectionName, keyName, DefaultValue);
 }
