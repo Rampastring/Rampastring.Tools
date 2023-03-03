@@ -13,7 +13,7 @@ public static class Logger
 
     public static bool WriteLogFile { get; set; }
 
-    private static string LogPath;
+    private static string FullLogPath;
 
     private static string LogFileName;
 
@@ -21,8 +21,8 @@ public static class Logger
 
     public static void Initialize(string logFilePath, string logFileName)
     {
-        LogPath = logFilePath;
         LogFileName = logFileName;
+        FullLogPath = SafePath.CombineFilePath(logFilePath, logFileName);
     }
 
     public static void Log(string data)
@@ -36,13 +36,13 @@ public static class Logger
             {
                 try
                 {
-                    using StreamWriter sw = new StreamWriter(SafePath.CombineFilePath(LogPath, LogFileName), true);
+                    using StreamWriter sw = new StreamWriter(FullLogPath,true);
 
                     DateTime now = DateTime.Now;
 
                     StringBuilder sb = new StringBuilder();
-                    sb.Append(now.ToString("dd.MM. HH:mm:ss.fff"));
-                    sb.Append("    ");
+                    sb.Append(now.ToString("dd.MM.yyyy HH:mm:ss.fff"));
+                    sb.Append("  : ");
                     sb.Append(data);
 
                     sw.WriteLine(sb.ToString());
@@ -65,13 +65,13 @@ public static class Logger
             {
                 try
                 {
-                    using StreamWriter sw = new StreamWriter(SafePath.CombineFilePath(LogPath, fileName), true);
+                    using StreamWriter sw = new StreamWriter(FullLogPath, true);
 
                     DateTime now = DateTime.Now;
 
                     StringBuilder sb = new StringBuilder();
-                    sb.Append(now.ToString("dd.MM. HH:mm:ss.fff"));
-                    sb.Append("    ");
+                    sb.Append(now.ToString("dd.MM.yyyy HH:mm:ss.fff"));
+                    sb.Append("  : ");
                     sb.Append(data);
 
                     sw.WriteLine(sb.ToString());
@@ -94,13 +94,13 @@ public static class Logger
             {
                 try
                 {
-                    using StreamWriter sw = new StreamWriter(SafePath.CombineFilePath(LogPath, LogFileName), true);
+                    using StreamWriter sw = new StreamWriter(FullLogPath, true);
 
                     DateTime now = DateTime.Now;
 
                     StringBuilder sb = new StringBuilder();
-                    sb.Append(now.ToString("dd.MM. HH:mm:ss.fff"));
-                    sb.Append("    ");
+                    sb.Append(now.ToString("dd.MM.yyyy HH:mm:ss.fff"));
+                    sb.Append("  : ");
                     sb.Append(string.Format(data, f1));
 
                     sw.WriteLine(sb.ToString());
@@ -123,13 +123,13 @@ public static class Logger
             {
                 try
                 {
-                    using StreamWriter sw = new StreamWriter(SafePath.CombineFilePath(LogPath, LogFileName), true);
+                    using StreamWriter sw = new StreamWriter(FullLogPath, true);
 
                     DateTime now = DateTime.Now;
 
                     StringBuilder sb = new StringBuilder();
-                    sb.Append(now.ToString("dd.MM. HH:mm:ss.fff"));
-                    sb.Append("    ");
+                    sb.Append(now.ToString("dd.MM.yyyy HH:mm:ss.fff"));
+                    sb.Append("  : ");
                     sb.Append(string.Format(data, f1, f2));
 
                     sw.WriteLine(sb.ToString());
@@ -149,13 +149,13 @@ public static class Logger
 
             try
             {
-                using StreamWriter sw = new StreamWriter(SafePath.CombineFilePath(LogPath, LogFileName), true);
+                using StreamWriter sw = new StreamWriter(FullLogPath, true);
 
                 DateTime now = DateTime.Now;
 
                 StringBuilder sb = new StringBuilder();
-                sb.Append(now.ToString("dd.MM. HH:mm:ss.fff"));
-                sb.Append("    ");
+                sb.Append(now.ToString("dd.MM.yyyy HH:mm:ss.fff"));
+                sb.Append("  : ");
                 sb.Append(data);
 
                 sw.WriteLine(sb.ToString());
@@ -174,13 +174,13 @@ public static class Logger
 
             try
             {
-                using StreamWriter sw = new StreamWriter(SafePath.CombineFilePath(LogPath, fileName), true);
+                using StreamWriter sw = new StreamWriter(FullLogPath, true);
 
                 DateTime now = DateTime.Now;
 
                 StringBuilder sb = new StringBuilder();
-                sb.Append(now.ToString("dd.MM. HH:mm:ss.fff"));
-                sb.Append("    ");
+                sb.Append(now.ToString("dd.MM.yyyy HH:mm:ss.fff"));
+                sb.Append("  : ");
                 sb.Append(data);
 
                 sw.WriteLine(sb.ToString());
