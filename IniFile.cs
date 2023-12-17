@@ -705,4 +705,17 @@ public class IniFile : IIniFile
 
         return section.KeyExists(keyName);
     }
+
+    /// <summary>
+    /// Removes a key from the given section in the INI file.
+    /// </summary>
+    /// <param name="sectionName">The name of the section to remove the key from.</param>
+    /// <param name="key">The key to remove from the section.</param>
+    public void RemoveKey(string sectionName, string key)
+    {
+        var section = GetSection(sectionName);
+
+        if (section != null)
+            section.RemoveKey(key);
+    }
 }

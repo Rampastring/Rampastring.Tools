@@ -26,6 +26,7 @@ public interface IIniFile
     string GetStringValue(string section, string key, string defaultValue);
     string GetStringValue(string section, string key, string defaultValue, out bool success);
     bool KeyExists(string sectionName, string keyName);
+    void RemoveKey(string sectionName, string key);
     void Parse();
     void Reload();
     bool SectionExists(string sectionName);
@@ -39,5 +40,4 @@ public interface IIniFile
     void WriteIniFile();
     void WriteIniFile(string filePath);
     void WriteIniStream(Stream stream);
-
 }

@@ -13,7 +13,6 @@ namespace Rampastring.Tools;
 /// </summary>
 public class IniSection : IIniSection
 {
-
     public IniSection() { }
 
     public IniSection(string sectionName)
