@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Text;
 using System.IO;
+using System.Globalization;
 
 namespace Rampastring.Tools;
 
@@ -27,50 +28,51 @@ public static class Logger
 
     public static void Log(string data)
     {
-        lock (locker)
-        {
-            if (WriteToConsole)
-                Console.WriteLine(data);
-
-            if (WriteLogFile)
-            {
-                try
-                {
-                    using StreamWriter sw = new StreamWriter(SafePath.CombineFilePath(LogPath, LogFileName), true);
-
-                    DateTime now = DateTime.Now;
-
-                    StringBuilder sb = new StringBuilder();
-                    sb.Append(now.ToString("dd.MM. HH:mm:ss.fff"));
-                    sb.Append("    ");
-                    sb.Append(data);
-
-                    sw.WriteLine(sb.ToString());
-                }
-                catch
-                {
-                }
-            }
-        }
+        DoLog(data, LogFileName, WriteToConsole, WriteLogFile);
     }
 
     public static void Log(string data, string fileName)
     {
+        DoLog(data, fileName, WriteToConsole, WriteLogFile);
+    }
+
+    public static void Log(string data, object f1)
+    {
+        DoLog(string.Format(CultureInfo.InvariantCulture, data, f1), LogFileName, WriteToConsole, WriteLogFile);
+    }
+
+    public static void Log(string data, object f1, object f2)
+    {
+        DoLog(string.Format(CultureInfo.InvariantCulture, data, f1, f2), LogFileName, WriteToConsole, WriteLogFile);
+    }
+
+    public static void ForceLog(string data)
+    {
+        DoLog(data, LogFileName, true, true);
+    }
+
+    public static void ForceLog(string data, string fileName)
+    {
+        DoLog(data, fileName, true, true);
+    }
+
+    private static void DoLog(string data, string fileName, bool writeToConsole, bool writeToFile)
+    {
         lock (locker)
         {
-            if (WriteToConsole)
+            if (writeToConsole)
                 Console.WriteLine(data);
 
-            if (WriteLogFile)
+            if (writeToFile)
             {
                 try
                 {
-                    using StreamWriter sw = new StreamWriter(SafePath.CombineFilePath(LogPath, fileName), true);
+                    using var sw = new StreamWriter(SafePath.CombineFilePath(LogPath, fileName), true);
 
                     DateTime now = DateTime.Now;
 
-                    StringBuilder sb = new StringBuilder();
-                    sb.Append(now.ToString("dd.MM. HH:mm:ss.fff"));
+                    var sb = new StringBuilder();
+                    sb.Append(now.ToString("dd.MM. HH:mm:ss.fff", CultureInfo.InvariantCulture));
                     sb.Append("    ");
                     sb.Append(data);
 
@@ -79,114 +81,6 @@ public static class Logger
                 catch
                 {
                 }
-            }
-        }
-    }
-
-    public static void Log(string data, object f1)
-    {
-        lock (locker)
-        {
-            if (WriteToConsole)
-                Console.WriteLine(data);
-
-            if (WriteLogFile)
-            {
-                try
-                {
-                    using StreamWriter sw = new StreamWriter(SafePath.CombineFilePath(LogPath, LogFileName), true);
-
-                    DateTime now = DateTime.Now;
-
-                    StringBuilder sb = new StringBuilder();
-                    sb.Append(now.ToString("dd.MM. HH:mm:ss.fff"));
-                    sb.Append("    ");
-                    sb.Append(string.Format(data, f1));
-
-                    sw.WriteLine(sb.ToString());
-                }
-                catch
-                {
-                }
-            }
-        }
-    }
-
-    public static void Log(string data, object f1, object f2)
-    {
-        lock (locker)
-        {
-            if (WriteToConsole)
-                Console.WriteLine(data);
-
-            if (WriteLogFile)
-            {
-                try
-                {
-                    using StreamWriter sw = new StreamWriter(SafePath.CombineFilePath(LogPath, LogFileName), true);
-
-                    DateTime now = DateTime.Now;
-
-                    StringBuilder sb = new StringBuilder();
-                    sb.Append(now.ToString("dd.MM. HH:mm:ss.fff"));
-                    sb.Append("    ");
-                    sb.Append(string.Format(data, f1, f2));
-
-                    sw.WriteLine(sb.ToString());
-                }
-                catch
-                {
-                }
-            }
-        }
-    }
-
-    public static void ForceLog(string data)
-    {
-        lock (locker)
-        {
-            Console.WriteLine(data);
-
-            try
-            {
-                using StreamWriter sw = new StreamWriter(SafePath.CombineFilePath(LogPath, LogFileName), true);
-
-                DateTime now = DateTime.Now;
-
-                StringBuilder sb = new StringBuilder();
-                sb.Append(now.ToString("dd.MM. HH:mm:ss.fff"));
-                sb.Append("    ");
-                sb.Append(data);
-
-                sw.WriteLine(sb.ToString());
-            }
-            catch
-            {
-            }
-        }
-    }
-
-    public static void ForceLog(string data, string fileName)
-    {
-        lock (locker)
-        {
-            Console.WriteLine(data);
-
-            try
-            {
-                using StreamWriter sw = new StreamWriter(SafePath.CombineFilePath(LogPath, fileName), true);
-
-                DateTime now = DateTime.Now;
-
-                StringBuilder sb = new StringBuilder();
-                sb.Append(now.ToString("dd.MM. HH:mm:ss.fff"));
-                sb.Append("    ");
-                sb.Append(data);
-
-                sw.WriteLine(sb.ToString());
-            }
-            catch
-            {
             }
         }
     }
