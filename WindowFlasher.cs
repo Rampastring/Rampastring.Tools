@@ -12,7 +12,7 @@ public static class WindowFlasher
     /// </summary>
     /// <param name="windowHandle">The handle of the window to flash.</param>
     /// <returns>The return value fo FlashWindowEx.</returns>
-#if !NETFRAMEWORK
+#if NET5_0_OR_GREATER
     [System.Runtime.Versioning.SupportedOSPlatform("windows5.1.2600")]
 #endif
     public static bool FlashWindowEx(IntPtr windowHandle)
