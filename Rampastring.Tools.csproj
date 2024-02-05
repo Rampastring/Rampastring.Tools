@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>net7.0;net48</TargetFrameworks>
+    <TargetFrameworks>net8.0;netstandard2.0;net48</TargetFrameworks>
     <Title>Rampastring.Tools</Title>
     <Description>Rampastring's Generally Useful Library</Description>
     <Company>Rampastring</Company>
