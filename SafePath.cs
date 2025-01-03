@@ -63,8 +63,11 @@ public static class SafePath
     {
         var fileInfo = new FileInfo(CombineFilePath(paths));
 
-        if (fileInfo.Exists)
-            fileInfo.Delete();
+        if (!fileInfo.Exists)
+            return;
+
+        fileInfo.IsReadOnly = false;
+        fileInfo.Delete();
     }
 
     /// <summary>
