@@ -65,10 +65,10 @@ public class ExtendedStringBuilder : ISerializable
 
     public override string ToString()
     {
-        if (UseSeparator)
-            stringBuilder.Remove(stringBuilder.Length - 1, 1);
+        if (!UseSeparator || stringBuilder.Length == 0)
+            return stringBuilder.ToString();
 
-        return stringBuilder.ToString();
+        return stringBuilder.ToString(0, stringBuilder.Length - 1);
     }
 
     public void GetObjectData(SerializationInfo info, StreamingContext context)
