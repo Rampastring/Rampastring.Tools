@@ -240,11 +240,22 @@ public class IniFile : IIniFile
     protected virtual void ApplyBaseIni()
     {
         string basedOn = GetStringValue("INISystem", "BasedOn", String.Empty);
+        string path = SafePath.CombineFilePath(SafePath.GetFileDirectoryName(FileName), basedOn);
+        IniFile baseIni = new(path);
+        string parentBasedOn = baseIni.GetStringValue("INISystem", "BasedOn", String.Empty);
+
+        if (!String.IsNullOrEmpty(parentBasedOn.Trim()))
+        {
+            if (new FileInfo(FileName) == new FileInfo(parentBasedOn))
+            {
+                throw new IniParseException(String.Format("The parent .ini file \"{0}\" inherits from the child .ini file \"{1}\".", path, FileName));
+            }
+        }
+
+
         if (!String.IsNullOrEmpty(basedOn))
         {
             // Consolidate with the INI file that this INI file is based on
-            string path = SafePath.CombineFilePath(SafePath.GetFileDirectoryName(FileName), basedOn);
-            IniFile baseIni = new IniFile(path);
             ConsolidateIniFiles(baseIni, this);
             Sections = baseIni.Sections;
         }
