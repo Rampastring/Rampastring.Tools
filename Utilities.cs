@@ -45,7 +45,7 @@ public static class Utilities
     /// <returns>A string that represents the input string's SHA1.</returns>
     public static string CalculateSHA1ForString(string str)
     {
-        byte[] buffer = Encoding.ASCII.GetBytes(str);
+        byte[] buffer = Encoding.UTF8.GetBytes(str);
 #pragma warning disable CA5350 // Do Not Use Weak Cryptographic Algorithms
 #if NET7_0_OR_GREATER
         byte[] hash = SHA1.HashData(buffer);
